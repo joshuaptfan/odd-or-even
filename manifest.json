@@ -1,0 +1,16 @@
+{
+	"name": "Odd or Even",
+	"short_name": "Odd or Even",
+	"start_url": ".",
+	"scope": "/",
+	"icons": [{
+		"src": "images/icon-192.png",
+		"type": "image/png",
+		"sizes": "192x192"
+	}, {
+		"src": "images/icon.svg"
+	}],
+	"theme_color": "#000",
+	"background_color": "#000",
+	"display": "standalone"
+}

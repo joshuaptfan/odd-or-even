@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<meta charset='UTF-8'>
+	<title>Odd or Even</title>
+	<meta name='viewport' content='height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no'>
+	<meta name='description' content='Multiplayer math game'>
+	<meta name='theme-color' content='#000'>
+	<meta property='og:title' content='Odd or Even'>
+	<meta property='og:type' content='website'>
+	<meta property='og:url' content='https://oddoreven.app/'>
+	<meta property='og:image' content='https://oddoreven.app/images/icon-192.png'>
+	<meta name='twitter:card' content='summary'>
+	<meta name='twitter:site' content='@joshuaptfan'>
+	<meta name='twitter:title' content='Odd or Even'>
+	<meta name='twitter:description' content='Multiplayer math game'>
+	<meta name='twitter:image' content='https://oddoreven.app/images/icon-192.png'>
+	<link rel='icon' sizes='16x16 32x32 48x48' type='image/icon' href='favicon.ico'>
+	<link rel='icon' sizes='192x192' type='image/png' href='images/icon-192.png'>
+	<link rel='icon' sizes='any' type='image/svg+xml' href='images/icon.svg'>
+	<link rel='stylesheet' type='text/css' href='index.css'>
+	<link rel='manifest' href='manifest.json'>
+	<script src='index.js' defer></script>
+</head>
+<body>
+	<div class='warn-ES6'>Please <a href='http://outdatedbrowser.com/' target='_blank' rel='noopener'>update your browser</a> to use this site.</div>
+	<noscript>Please enable JavaScript to use this site.</noscript>
+	<div class='page home activated'>
+		<h1>Odd or Even</h1>
+		<h4>Multiplayer math game</h4>
+		<button class='play-btn'>Play</button>
+		<button class='tutorial-btn'>Tutorial</button>
+		<button class='about-btn'>About</button>
+	</div>
+	<div class='page setup'>
+		<h2>Point Spread to Win</h2>
+		<button class='incr points' value='-1'>&minus;</button>
+		<span class='setup-num points'></span>
+		<button class='incr points' value='1'>+</button>
+		<button class='start-btn'>Start</button>
+	</div>
+	<div class='page tutorial'>
+	</div>
+	<div class='page about'>
+		<h2>About</h2>
+		<p>Designed by <a href='https://github.com/joshuaptfan' target='_blank' rel='noopener'>Joshua Fan</a></p>
+		<p><a href='https://github.com/joshuaptfan/odd-or-even' target='_blank' rel='noopener'>Source on GitHub</a></p>
+	</div>
+	<div class='page game'>
+		<div class='up'>
+			<p class='expression'></p>
+			<div class='player'></div>
+			<div class='point'></div>
+		</div>
+		<input type='checkbox' id='color-blind'>
+		<div class='buzzer'>
+			<div class='wave'></div>
+			<div class='sweep'></div>
+			<button value='-1'>
+				<span>&minus;</span>
+				<span>&minus;</span>
+			</button>
+			<button value='1'>+</button>
+		</div>
+		<div class='dn'>
+			<p class='expression'></p>
+			<div class='player'></div>
+			<div class='point'></div>
+		</div>
+		<button class='menu-btn'>
+			<svg viewBox='0 0 7 6'>
+				<path d='M1,1 h5 M1,3 h5 M1,5 h5'/>
+			</svg>
+		</button>
+		<button class='restart-btn'>
+			<svg viewBox='0 0 6 6'>
+				<path d='M1.2,2.1 A2,2 0 1 0 3,1 M3,.5 l-.5,.5 l.5,.5'/>
+			</svg>
+		</button>
+		<button class='home-btn'>
+			<svg viewBox='0 0 6 6'>
+				<path d='M1,2.8 h.5 v2 h3 v-2 h.5 l-.7,-.7 v-.6 h-.6 l-.7,-.7 Z'/>
+			</svg>
+		</button>
+		<label for='color-blind' class='color-blind-btn'>
+			<svg viewBox='0 0 8 8'>
+				<path d='M.5,4 a4.4,4.4 0 0 0 7,0 a4.4,4.4 0 0 0 -7,0 m1.78,0 a1.73,1.73 0 1 1 0,.01 M1,7 l6,-6'/>
+			</svg>
+		</label>
+	</div>
+	<button class='back-btn'>
+		<svg viewBox='0 0 6 6'>
+			<path d='M3,1 l-2,2 l2,2 M1,3 h4'/>
+		</svg>
+	</button>
+	<script type='text/javascript'>
+		try {
+			eval('"use strict"; let test = () => 0');
+		} catch (e) {
+			document.getElementById('warn-ES6').style.display = 'block';
+		}
+	</script>
+</body>
+</html>

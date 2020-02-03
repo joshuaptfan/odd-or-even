@@ -1,0 +1,588 @@
+:root {
+	font-size: 1vh;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 700;
+	text-align: center;
+	color: #FFF;
+	background-color: #000;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+			user-select: none;
+}
+
+*:focus {
+	outline: none;
+}
+
+.warn-ES6,
+noscript {
+	display: block;
+	line-height: 6rem;
+	width: 100%;
+	font-size: 4rem;
+	background-color: #F70;
+}
+
+.warn-ES6,
+input[type=checkbox] {
+	display: none;
+}
+
+.warn-ES6 > a {
+	color: #07F;
+}
+
+.page {
+	position: fixed;
+	visibility: hidden;
+	margin-right: -50%;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	transform: translate(-50%, -50%);
+}
+
+.activated,
+.deactivated {
+	visibility: visible;
+}
+
+.fly-out-left {
+	animation: fly-left .5s;
+}
+
+.fly-in-left {
+	animation: fly-right .5s reverse;
+}
+
+.fly-out-right {
+	animation: fly-right .5s;
+}
+
+.fly-in-right {
+	animation: fly-left .5s reverse;
+}
+
+@keyframes fly-left {
+	from {
+		left: 50%;
+	} to {
+		left: -50%;
+	}
+}
+
+@keyframes fly-right {
+	from {
+		left: 50%;
+	} to {
+		left: 150%;
+	}
+}
+
+h1 {
+	font-size: 6rem;
+}
+
+h2 {
+	margin: 2rem;
+	font-size: 5rem;
+}
+
+h4 {
+	font-size: 2rem;
+	font-style: italic;
+}
+
+p {
+	font-size: 3rem;
+}
+
+a {
+	color: #49F;
+}
+
+button {
+	display: inline-block;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 5rem;
+	font-weight: 700;
+	vertical-align: middle;
+	color: #FFF;
+	background-color: transparent;
+	border: .2rem solid #FFF;
+	border-radius: 5rem;
+	cursor: pointer;
+}
+
+button:active {
+	color: #000;
+	background-color: #FFF;
+}
+
+.home > button,
+.start-btn {
+	display: block;
+	margin: 5rem auto;
+	padding: 1.5rem;
+}
+
+.home > button:first-of-type,
+.start-btn {
+	margin-top: 8rem;
+}
+
+.incr {
+	margin: 0 2rem;
+	height: 7rem;
+	width: 7rem;
+}
+
+.setup-num {
+	display: inline-block;
+	position: relative;
+	height: 7rem;
+	width: 6rem;
+	line-height: 7rem;
+	font-size: 5rem;
+	vertical-align: middle;
+}
+
+.setup-num:empty::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: no-repeat center/100% url(images/infinity.svg);
+	content: '';
+}
+
+.game {
+	height: 100%;
+}
+
+.buzzer {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 33rem;
+	width: 33rem;
+	transform: translate(-50%, -50%);
+}
+
+.wave {
+	position: absolute;
+	z-index: -1;
+	top: 50%;
+	left: 50%;
+	height: 70rem;
+	width: 100%;
+	transform: translateX(-50%);
+	transform-origin: center top;
+	overflow: hidden;
+}
+
+.wave::before {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	height: 0;
+	width: 0;
+	transform: translate(-50%, -50%);
+	background: radial-gradient(circle farthest-side, transparent 50%, #F00 75%);
+	border-radius: 50%;
+	content: '';
+}
+
+#color-blind:checked + .buzzer > .wave::before {
+	background: radial-gradient(circle farthest-side, transparent 50%, #F70 75%);
+}
+
+.buzzer.pos > .wave::before {
+	background: radial-gradient(circle farthest-side, transparent 50%, #0F0 75%);
+}
+
+#color-blind:checked + .buzzer.pos > .wave::before {
+	background: radial-gradient(circle farthest-side, transparent 50%, #07F 75%);
+}
+
+.buzzer.win > .wave {
+	overflow: visible;
+}
+
+.buzzer.win > .wave::before {
+	background: radial-gradient(circle farthest-side, transparent 30%, #F0F 40%, #00F 50%, #0FF 60%, #0F0 70%, #FF0 80%, #F00 90%, transparent) !important;
+}
+
+.buzzer.wave-up > .wave {
+	transform: translateX(-50%) rotate(180deg);
+}
+
+.buzzer.wave-up > .wave::before,
+.buzzer.wave-dn > .wave::before {
+	animation: wave .5s ease-out;
+}
+
+.buzzer.win > .wave::before {
+	animation: wave 2s ease-out infinite;
+}
+
+@keyframes wave {
+	from {
+		height: 33rem;
+		width: 33rem;
+		opacity: 1;
+	} to {
+		height: 110rem;
+		width: 110rem;
+		opacity: 0;
+	}
+}
+
+.sweep {
+	position: absolute;
+	z-index: -1;
+	top: 50%;
+	left: 50%;
+	height: 37rem;
+	width: 0;
+	transform: translate(-50%, -50%);
+	overflow: hidden;
+}
+
+.sweep::before {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 35rem;
+	width: 35rem;
+	transform: translate(-50%, -50%);
+	border: 1rem solid #FFF;
+	border-radius: 50%;
+	content: '';
+}
+
+.buzzer.countdown > .sweep {
+	animation: sweep 3s linear;
+}
+
+.buzzer.wave-up > .sweep,
+.buzzer.wave-dn > .sweep {
+	animation: sweep .75s linear;
+}
+
+@keyframes sweep {
+	from {
+		width: 100%;
+		opacity: 0;
+	} to {
+		width: 0;
+		opacity: 1;
+	}
+}
+
+.buzzer > button {
+	left: 0;
+	height: 100%;
+	width: 100%;
+	font-size: 8rem;
+	color: #000;
+	background-color: #B00;
+	border: none;
+	border-radius: 50%;
+}
+
+#color-blind:checked + .buzzer > button {
+	background-color: #B50;
+}
+
+.buzzer > button.active {
+	color: #FFF;
+	background-color: #F00;
+}
+
+#color-blind:checked + .buzzer > button.active {
+	background-color: #F70;
+}
+
+.buzzer > button:first-of-type > span {
+	position: absolute;
+	top: 50%;
+	left: 16%;
+	transform: translate(-50%, -50%);
+	pointer-events: none;
+}
+
+.buzzer > button:first-of-type > span:last-of-type {
+	left: 84%;
+}
+
+.buzzer > button:last-of-type {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 40%;
+	width: 40%;
+	transform: translate(-50%, -50%);
+	background-color: #0B0;
+	border: 1rem solid #000;
+}
+
+#color-blind:checked + .buzzer > button:last-of-type {
+	background-color: #05B;
+}
+
+.buzzer > button:last-of-type.active {
+	background-color: #0F0;
+}
+
+#color-blind:checked + .buzzer > button:last-of-type.active {
+	background-color: #07F;
+}
+
+.up,
+.dn {
+	position: absolute;
+	z-index: 1;
+	margin-right: -50%;
+	left: 50%;
+	height: calc(50% - 20.5rem);
+	font-size: 5rem;
+}
+
+.up {
+	top: 2rem;
+	transform: translateX(-50%) rotate(180deg);
+}
+
+.dn {
+	bottom: 2rem;
+	transform: translateX(-50%);
+}
+
+.expression {
+	margin: 4rem 0;
+	font-size: 8rem;
+}
+
+.player {
+	font-size: 4rem;
+	color: #AAA;
+}
+
+.point {
+	font-size: 5rem;
+	color: #FFF;
+}
+
+.game > button,
+.color-blind-btn,
+.back-btn {
+	position: absolute;
+	z-index: 2;
+	padding: .8rem;
+	bottom: 2rem;
+	left: 2rem;
+	height: 5rem;
+	width: 5rem;
+}
+
+svg {
+	display: block;
+	margin: auto;
+	stroke: #FFF;
+	stroke-width: 1;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	fill: none;
+	pointer-events: none;
+}
+
+button:active > svg {
+	stroke: #000;
+}
+
+.game > .menu-btn {
+	z-index: 3;
+}
+
+.menu-btn > svg {
+	width: 3rem;
+}
+
+.restart-btn {
+	opacity: 0;
+	transition: left .2s, opacity .2s;
+}
+
+.menu-btn.opened ~ .restart-btn {
+	left: 9rem;
+	opacity: 1;
+}
+
+.home-btn {
+	opacity: 0;
+	transition: left .3s, opacity .3s;
+}
+
+.home-btn > svg,
+.color-blind-btn > svg {
+	fill: #FFF;
+}
+
+.home-btn:active > svg {
+	fill: #000;
+}
+
+.menu-btn.opened ~ .home-btn {
+	left: 16rem;
+	opacity: 1;
+}
+
+.color-blind-btn {
+	box-sizing: border-box;
+	opacity: 0;
+	border: .2rem solid #FFF;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: bottom .4s, opacity .4s;
+}
+
+#color-blind:checked ~ .color-blind-btn {
+	background-color: #FFF;
+}
+
+#color-blind:checked ~ .color-blind-btn > svg {
+	stroke: #000;
+	fill: #000;
+}
+
+.menu-btn.opened ~ .color-blind-btn {
+	bottom: 9rem;
+	opacity: 1;
+}
+
+@keyframes fade-color-blind {
+	from {
+		bottom: 2rem;
+		opacity: 0;
+	} to {
+		bottom: 9rem;
+		opacity: 1;
+	}
+}
+
+.back-btn {
+	visibility: hidden;
+}
+
+.setup.activated ~ .back-btn,
+.tutorial.activated ~ .back-btn,
+.about.activated ~ .back-btn {
+	visibility: visible;
+	animation: fade-in-left .5s;
+}
+
+.setup.deactivated ~ .back-btn,
+.tutorial.deactivated ~ .back-btn,
+.about.deactivated ~ .back-btn {
+	animation: fade-out-right .5s;
+}
+
+.game.activated ~ .back-btn {
+	animation: fade-out-left .5s;
+}
+
+@keyframes fade-in-left {
+	from {
+		left: 3rem;
+		opacity: 0;
+	} to {
+		left: 2rem;
+		opacity: 1;
+	}
+}
+
+@keyframes fade-out-right {
+	from {
+		left: 2rem;
+		opacity: 1;
+	} to {
+		left: 3rem;
+		opacity: 0;
+	}
+}
+
+@keyframes fade-out-left {
+	from {
+		left: 2rem;
+		opacity: 1;
+	} to {
+		left: 1rem;
+		opacity: 0;
+	}
+}
+
+@media only screen
+and (max-width: 480px) {
+	.buzzer {
+		height: 40rem;
+		width: 40rem;
+	}
+
+	@keyframes wave {
+		from {
+			height: 40rem;
+			width: 40rem;
+			opacity: 1;
+		} to {
+			height: 110rem;
+			width: 110rem;
+			opacity: 0;
+		}
+	}
+
+	.sweep {
+		height: 45rem;
+	}
+
+	.sweep::before {
+		height: 42.4rem;
+		width: 42.4rem;
+		border-width: 1.2rem;
+	}
+
+	.buzzer > button {
+		font-size: 9.7rem;
+	}
+
+	.buzzer > button:last-of-type {
+		border-width: 1.2rem;
+	}
+
+	.up,
+	.dn {
+		height: calc(50% - 24.4rem);
+	}
+
+	.expression {
+		margin: 3rem 0;
+	}
+
+	.game > button,
+	.game > label,
+	.back-btn {
+		height: 6rem;
+		width: 6rem;
+	}
+
+	.menu-btn > svg {
+		width: 3.8rem;
+	}
+}
