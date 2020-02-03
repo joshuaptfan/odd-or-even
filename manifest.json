@@ -8,9 +8,14 @@
 		"type": "image/png",
 		"sizes": "192x192"
 	}, {
+		"src": "images/icon-512.png",
+		"type": "image/png",
+		"sizes": "512x512"
+	}, {
 		"src": "images/icon.svg"
 	}],
 	"theme_color": "#000",
 	"background_color": "#000",
-	"display": "fullscreen"
+	"display": "fullscreen",
+	"orientation": "portrait"
 }
