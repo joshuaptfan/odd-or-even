@@ -167,7 +167,10 @@ function genExpression() {
 	rand = Math.random();
 	if (rand < .3) {
 		// Generate number
-		ex = Math.floor(Math.random() * (rand < .06 ? 10 : rand < .16 ? 100 : rand < .26 ? 1000 : 1000000) / 2) * 2 + currPlayer;
+		const numSize = [.033, .075, .122, .17, .215, .252, .276, .29, .3];
+		let i = -1;
+		while (rand > numSize[++i]);
+		ex = (Math.random() * 10 ** i & 0x7FFFFFFE) + currPlayer;
 	} else {
 		// Generate additive expression
 		let numNums = Math.ceil(Math.random() * 4);
