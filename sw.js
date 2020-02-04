@@ -9,6 +9,7 @@ self.addEventListener('install', e => {
 				'/index.js',
 				'/favicon.ico',
 				'/images/icon-192.png',
+				'/images/icon-512.png',
 				'/images/icon.svg',
 				'/images/infinity.svg'
 			]).then(() => self.skipWaiting());

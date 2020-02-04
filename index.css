@@ -468,16 +468,6 @@ button:active > svg {
 	opacity: 1;
 }
 
-@keyframes fade-color-blind {
-	from {
-		bottom: 2rem;
-		opacity: 0;
-	} to {
-		bottom: 9rem;
-		opacity: 1;
-	}
-}
-
 .back-btn {
 	visibility: hidden;
 }
@@ -575,14 +565,15 @@ and (max-width: 480px) {
 		margin: 3rem 0;
 	}
 
-	.game > button,
-	.game > label,
-	.back-btn {
-		height: 6rem;
-		width: 6rem;
+	.menu-btn.opened ~ .restart-btn {
+		left: 8rem;
 	}
 
-	.menu-btn > svg {
-		width: 3.8rem;
+	.menu-btn.opened ~ .home-btn {
+		left: 14rem;
+	}
+
+	.menu-btn.opened ~ .color-blind-btn {
+		bottom: 8rem;
 	}
 }
