@@ -42,9 +42,8 @@ input[type=checkbox] {
 	visibility: hidden;
 	margin-right: -50%;
 	top: 50%;
-	left: 50%;
 	width: 100%;
-	transform: translate(-50%, -50%);
+	transform: translateY(-50%);
 }
 
 .activated,
@@ -70,17 +69,17 @@ input[type=checkbox] {
 
 @keyframes fly-left {
 	from {
-		left: 50%;
+		left: 0;
 	} to {
-		left: -50%;
+		left: -100%;
 	}
 }
 
 @keyframes fly-right {
 	from {
-		left: 50%;
+		left: 0;
 	} to {
-		left: 150%;
+		left: 200%;
 	}
 }
 
@@ -137,6 +136,45 @@ button:active {
 	margin-top: 8rem;
 }
 
+.warn {
+	position: absolute;
+	visibility: hidden;
+	margin-left: -21rem;
+	bottom: -8rem;
+	left: 50%;
+	width: 42rem;
+	font-size: 3rem;
+	color: #A00;
+	background-color: #000;
+}
+
+.home.warn-portrait > .warn {
+	margin-left: -32rem;
+	width: 64rem;
+	color: #A90;
+}
+
+.home.activated.warn-touch > .warn,
+.home.activated.warn-portrait > .warn {
+	visibility: visible;
+}
+
+.warn::before {
+	position: absolute;
+	z-index: -1;
+	top: 50%;
+	left: 50%;
+	height: 2.3rem;
+	width: 100vw;
+	transform: translate(-50vw, -50%);
+	background: repeating-linear-gradient(135deg, #000, #000 2rem, #A00 2rem, #A00 4rem);
+	content: '';
+}
+
+.home.warn-portrait > .warn::before {
+	background: repeating-linear-gradient(135deg, #000, #000 2rem, #A90 2rem, #A90 4rem);
+}
+
 .incr {
 	margin: 0 2rem;
 	height: 7rem;
@@ -186,6 +224,7 @@ button:active {
 	transform: translateX(-50%);
 	transform-origin: center top;
 	overflow: hidden;
+	pointer-events: none;
 }
 
 .wave::before {
@@ -254,6 +293,7 @@ button:active {
 	width: 0;
 	transform: translate(-50%, -50%);
 	overflow: hidden;
+	pointer-events: none;
 }
 
 .sweep::before {

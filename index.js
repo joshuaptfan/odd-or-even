@@ -2,13 +2,24 @@ var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta ||
 var stats = [];
 var currPlayer = 0;
 var buzzerLock = true;
+var canWarnTouch = true;
 var timeout;
 
 document.onreadystatechange = function () {
+	const home = document.querySelector('.home');
 	document.querySelector(':root').style.fontSize = window.innerHeight * .01 + 'px';
 	document.querySelector('.setup-num.points').textContent = ptDelta;
 	document.querySelector('#color-blind').checked = parseInt(localStorage.colorBlind) ? true : false;
 
+	home.addEventListener('touchstart', () => {
+		home.removeEventListener('touchstart', arguments.callee);
+		home.removeEventListener('mousemove', warnTouch);
+		home.classList.remove('warn-touch');
+		canWarnTouch = false;
+		document.querySelector('.warn').textContent = 'PORTRAIT ORIENTATION RECOMMENDED';
+		warnPortrait();
+	});
+	home.addEventListener('mousemove', warnTouch);
 	document.querySelector('.buzzer').addEventListener('touchstart', e => {
 		buzz(e, true);
 	});
@@ -71,16 +82,31 @@ document.onreadystatechange = function () {
 	});
 	window.addEventListener('resize', () => {
 		document.querySelector(':root').style.fontSize = window.innerHeight * .01 + 'px';
+		warnPortrait();
 	});
 
 	// Service worker caches page for offline use
 	if ('serviceWorker' in navigator)
 		navigator.serviceWorker.register('/sw.js');
 
+	function warnTouch() {
+		home.removeEventListener('mousemove', warnTouch);
+		home.classList.add('warn-touch');
+	}
+
+	function warnPortrait() {
+		if (canWarnTouch) return;
+		if (window.innerWidth > window.innerHeight)
+			home.classList.add('warn-portrait');
+		else
+			home.classList.remove('warn-portrait');
+	}
+
 	function buzz(e, touch) {
-		if (buzzerLock || !e.target.value) return;
 		if (touch)
 			e.preventDefault();
+		e.stopPropagation();
+		if (buzzerLock || !e.target.value) return;
 		score(e, parseInt(e.target.value));
 	}
 };
@@ -110,9 +136,6 @@ function initGame() {
 	buzzer.className = 'buzzer';
 	void buzzer.offsetWidth;
 	buzzer.classList.add('countdown');
-	document.querySelectorAll('.buzzer > button').forEach(el => {
-		el.classList.remove('active');
-	});
 	document.querySelectorAll('.expression').forEach(el => {
 		el.textContent = '\u2026';
 	});
@@ -131,18 +154,21 @@ function score(e, val) {
 
 	buzzerLock = true;
 	const buzzer = document.querySelector('.buzzer');
+	e.target.classList.add('active');
 	if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
 		document.querySelectorAll('.expression').forEach(el => {
 			el.textContent = (stats[0].pt > stats[1].pt ? 'Even' : 'Odd') + ' Wins!';
 		});
 		buzzer.classList.add('win');
 		document.querySelector('.menu-btn').classList.add('opened');
+		setTimeout(() => {
+			e.target.classList.remove('active');
+		}, 750);
 		return;
 	}
 	if (val > 0)
 		buzzer.classList.add('pos');
 	buzzer.classList.add('wave-' + stats[currPlayer].d);
-	e.target.classList.add('active');
 	setTimeout(() => {
 		buzzerLock = false;
 		buzzer.className = 'buzzer';
