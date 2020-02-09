@@ -256,7 +256,7 @@ button:active {
 }
 
 .buzzer.win > .wave::before {
-	background: radial-gradient(circle farthest-side, transparent 30%, #F0F 40%, #00F 50%, #0FF 60%, #0F0 70%, #FF0 80%, #F00 90%, transparent) !important;
+	background: radial-gradient(circle farthest-side, transparent 50%, #FFF 75%) !important;
 }
 
 .buzzer.wave-up > .wave {
@@ -264,12 +264,9 @@ button:active {
 }
 
 .buzzer.wave-up > .wave::before,
-.buzzer.wave-dn > .wave::before {
-	animation: wave .5s ease-out;
-}
-
+.buzzer.wave-dn > .wave::before,
 .buzzer.win > .wave::before {
-	animation: wave 2s ease-out infinite;
+	animation: wave .5s ease-out;
 }
 
 @keyframes wave {
@@ -328,6 +325,8 @@ button:active {
 }
 
 .buzzer > button {
+	position: absolute;
+	top: 0;
 	left: 0;
 	height: 100%;
 	width: 100%;
@@ -338,7 +337,7 @@ button:active {
 	border-radius: 50%;
 }
 
-#color-blind:checked ~ .buzzer > button {
+#color-blind:checked ~ .buzzer > .minus {
 	background-color: #B50;
 }
 
@@ -347,12 +346,12 @@ button:active {
 	background-color: #F00;
 }
 
-#color-blind:checked ~ .buzzer > button.active {
+#color-blind:checked ~ .buzzer > .minus.active {
 	background-color: #F70;
 }
 
-.buzzer > button:first-of-type::before,
-.buzzer > button:first-of-type::after {
+.buzzer > .minus::before,
+.buzzer > .minus::after {
 	position: absolute;
 	top: 50%;
 	left: 16%;
@@ -361,12 +360,11 @@ button:active {
 	content: '\2212';
 }
 
-.buzzer > button:first-of-type::after {
+.buzzer > .minus::after {
 	left: 84%;
 }
 
-.buzzer > button:last-of-type {
-	position: absolute;
+.buzzer > .plus {
 	top: 30%;
 	left: 30%;
 	height: 40%;
@@ -375,16 +373,48 @@ button:active {
 	border: 1rem solid #000;
 }
 
-#color-blind:checked ~ .buzzer > button:last-of-type {
+#color-blind:checked ~ .buzzer > .plus {
 	background-color: #05B;
 }
 
-.buzzer > button:last-of-type.active {
+.buzzer > .plus.active {
 	background-color: #0F0;
 }
 
-#color-blind:checked ~ .buzzer > button:last-of-type.active {
+#color-blind:checked ~ .buzzer > .plus.active {
 	background-color: #07F;
+}
+
+.buzzer > .restart-btn-lg {
+	padding: 2rem;
+	background-color: #000;
+	opacity: 0;
+	border: #FFF solid 1rem;
+	pointer-events: none;
+	transition: opacity .3s;
+}
+
+.buzzer.win > .restart-btn-lg {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.buzzer > .restart-btn-lg:active {
+	background-color: #FFF;
+}
+
+.restart-btn-lg > svg {
+	stroke-linejoin: miter;
+	stroke-linecap: butt;
+	animation: spin 12s linear infinite;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0);
+	} to {
+		transform: rotate(360deg);
+	}
 }
 
 .up,
@@ -461,6 +491,7 @@ button:active {
 	from {
 		opacity: 1;
 	} to {
+		top: 0;
 		font-size: 50rem;
 		opacity: 0;
 	}

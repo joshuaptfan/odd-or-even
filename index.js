@@ -52,6 +52,7 @@ document.onreadystatechange = function () {
 				e.target.classList.toggle('opened');
 				break;
 			case 'restart-btn':
+			case 'restart-btn-lg':
 				initGame();
 				break;
 			case 'home-btn':
@@ -103,10 +104,11 @@ document.onreadystatechange = function () {
 	}
 
 	function buzz(e, touch) {
+		if (!e.target.value) return;
 		if (touch)
 			e.preventDefault();
 		e.stopPropagation();
-		if (buzzerLock || !e.target.value) return;
+		if (buzzerLock) return;
 		score(e, parseInt(e.target.value));
 	}
 };
@@ -165,19 +167,15 @@ function score(e, val) {
 
 	buzzerLock = true;
 	const buzzer = document.querySelector('.buzzer');
-	e.target.classList.add('active');
 	if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
 		setExpression((stats[0].pt > stats[1].pt ? 'EVEN' : 'ODD') + ' WINS');
 		buzzer.classList.add('win');
-		document.querySelector('.menu-btn').classList.add('opened');
-		setTimeout(() => {
-			e.target.classList.remove('active');
-		}, 750);
 		return;
 	}
 	if (val > 0)
 		buzzer.classList.add('pos');
 	buzzer.classList.add('wave-' + stats[currPlayer].d);
+	e.target.classList.add('active');
 	setTimeout(() => {
 		buzzerLock = false;
 		buzzer.className = 'buzzer';

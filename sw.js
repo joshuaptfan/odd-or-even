@@ -7,6 +7,7 @@ self.addEventListener('install', e => {
 				'/index.html',
 				'/index.css',
 				'/index.js',
+				'/countdowns.js',
 				'/favicon.ico',
 				'/images/icon-192.png',
 				'/images/icon-512.png',
