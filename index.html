@@ -21,6 +21,7 @@
 	<link rel='icon' sizes='any' type='image/svg+xml' href='images/icon.svg'>
 	<link rel='stylesheet' type='text/css' href='index.css'>
 	<link rel='manifest' href='manifest.json'>
+	<script src='countdowns.js' defer></script>
 	<script src='index.js' defer></script>
 </head>
 <body>
@@ -49,19 +50,16 @@
 		<p><a href='https://github.com/joshuaptfan/odd-or-even' target='_blank' rel='noopener'>Source on GitHub</a></p>
 	</div>
 	<div class='page game'>
+		<input type='checkbox' id='color-blind'>
 		<div class='up'>
 			<p class='expression'></p>
 			<div class='player'></div>
 			<div class='point'></div>
 		</div>
-		<input type='checkbox' id='color-blind'>
 		<div class='buzzer'>
 			<div class='wave'></div>
 			<div class='sweep'></div>
-			<button value='-1'>
-				<span>&minus;</span>
-				<span>&minus;</span>
-			</button>
+			<button value='-1'></button>
 			<button value='1'>+</button>
 		</div>
 		<div class='dn'>

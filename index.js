@@ -3,7 +3,7 @@ var stats = [];
 var currPlayer = 0;
 var buzzerLock = true;
 var canWarnTouch = true;
-var timeout;
+var interval;
 
 document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
@@ -117,7 +117,7 @@ function changePage(deactivated, activated, direction) {
 }
 
 function initGame() {
-	const rand = Math.floor(Math.random() * 2);
+	const rand = Math.trunc(Math.random() * 2);
 	document.querySelector('.up > .player').textContent = rand ? 'Even' : 'Odd';
 	let point = document.querySelector('.up > .point');
 	point.textContent = 0;
@@ -136,29 +136,38 @@ function initGame() {
 	buzzer.className = 'buzzer';
 	void buzzer.offsetWidth;
 	buzzer.classList.add('countdown');
-	document.querySelectorAll('.expression').forEach(el => {
-		el.textContent = '\u2026';
-	});
-	clearTimeout(timeout);
-	timeout = setTimeout(() => {
-		buzzerLock = false;
-		buzzer.classList.remove('countdown');
-		genExpression();
-	}, 3000);
+	const countdown = countdowns[Math.trunc(Math.random() * countdowns.length)];
+	let i = 0;
+	setExpression(countdown[0]);
+	clearInterval(interval);
+	interval = setInterval(() => {
+		if (++i < 3)
+			setExpression(countdown[i]);
+		else {
+			clearInterval(interval);
+			buzzerLock = false;
+			buzzer.classList.remove('countdown');
+			genExpression();
+		}
+	}, 1000);
 }
 
 function score(e, val) {
 	stats[currPlayer].pt += val;
 	stats[currPlayer].t++;
-	document.querySelector('#pt' + currPlayer).textContent = stats[currPlayer].pt;
+
+	const point = document.querySelector('#pt' + currPlayer);
+	point.textContent = stats[currPlayer].pt;
+	point.dataset.value = stats[currPlayer].pt;
+	point.classList.remove('flash', 'neg', 'pos');
+	void point.offsetWidth;
+	point.classList.add('flash', val < 0 ? 'neg' : 'pos');
 
 	buzzerLock = true;
 	const buzzer = document.querySelector('.buzzer');
 	e.target.classList.add('active');
 	if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
-		document.querySelectorAll('.expression').forEach(el => {
-			el.textContent = (stats[0].pt > stats[1].pt ? 'Even' : 'Odd') + ' Wins!';
-		});
+		setExpression((stats[0].pt > stats[1].pt ? 'EVEN' : 'ODD') + ' WINS');
 		buzzer.classList.add('win');
 		document.querySelector('.menu-btn').classList.add('opened');
 		setTimeout(() => {
@@ -202,13 +211,16 @@ function genExpression() {
 		let numNums = Math.ceil(Math.random() * 4);
 		let sum = 0;
 		while (numNums--) {
-			let num = Math.floor(Math.random() * 19) - 9;
+			let num = Math.trunc(Math.random() * 19) - 9;
 			sum += num;
 			ex += (num < 0 ? '\u2212' : ex ? '+' : '') + Math.abs(num);
 		}
-		ex += (n => !n ? '' : (n < 0 ? '\u2212' : '+') + Math.abs(n))((currPlayer - sum % 2) + Math.floor(Math.random() * 8) * 2 - 8);
+		ex += (n => !n ? '' : (n < 0 ? '\u2212' : '+') + Math.abs(n))((currPlayer - sum % 2) + (Math.random() * 17 & 0xFE) - 8);
 	}
+	setExpression(ex);
+}
 
+function setExpression(ex) {
 	document.querySelectorAll('.expression').forEach(el => {
 		el.textContent = ex;
 	});

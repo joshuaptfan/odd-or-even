@@ -139,18 +139,18 @@ button:active {
 .warn {
 	position: absolute;
 	visibility: hidden;
-	margin-left: -21rem;
+	margin: 0 auto;
+	padding: 0 1rem;
 	bottom: -8rem;
-	left: 50%;
-	width: 42rem;
+	left: 0;
+	right: 0;
+	width: max-content;
 	font-size: 3rem;
 	color: #A00;
 	background-color: #000;
 }
 
 .home.warn-portrait > .warn {
-	margin-left: -32rem;
-	width: 64rem;
 	color: #A90;
 }
 
@@ -239,7 +239,7 @@ button:active {
 	content: '';
 }
 
-#color-blind:checked + .buzzer > .wave::before {
+#color-blind:checked ~ .buzzer > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #F70 75%);
 }
 
@@ -247,7 +247,7 @@ button:active {
 	background: radial-gradient(circle farthest-side, transparent 50%, #0F0 75%);
 }
 
-#color-blind:checked + .buzzer.pos > .wave::before {
+#color-blind:checked ~ .buzzer.pos > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #07F 75%);
 }
 
@@ -338,7 +338,7 @@ button:active {
 	border-radius: 50%;
 }
 
-#color-blind:checked + .buzzer > button {
+#color-blind:checked ~ .buzzer > button {
 	background-color: #B50;
 }
 
@@ -347,34 +347,35 @@ button:active {
 	background-color: #F00;
 }
 
-#color-blind:checked + .buzzer > button.active {
+#color-blind:checked ~ .buzzer > button.active {
 	background-color: #F70;
 }
 
-.buzzer > button:first-of-type > span {
+.buzzer > button:first-of-type::before,
+.buzzer > button:first-of-type::after {
 	position: absolute;
 	top: 50%;
 	left: 16%;
 	transform: translate(-50%, -50%);
 	pointer-events: none;
+	content: '\2212';
 }
 
-.buzzer > button:first-of-type > span:last-of-type {
+.buzzer > button:first-of-type::after {
 	left: 84%;
 }
 
 .buzzer > button:last-of-type {
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	top: 30%;
+	left: 30%;
 	height: 40%;
 	width: 40%;
-	transform: translate(-50%, -50%);
 	background-color: #0B0;
 	border: 1rem solid #000;
 }
 
-#color-blind:checked + .buzzer > button:last-of-type {
+#color-blind:checked ~ .buzzer > button:last-of-type {
 	background-color: #05B;
 }
 
@@ -382,7 +383,7 @@ button:active {
 	background-color: #0F0;
 }
 
-#color-blind:checked + .buzzer > button:last-of-type.active {
+#color-blind:checked ~ .buzzer > button:last-of-type.active {
 	background-color: #07F;
 }
 
@@ -408,7 +409,9 @@ button:active {
 
 .expression {
 	margin: 4rem 0;
+	line-height: 9rem;
 	font-size: 8rem;
+	white-space: nowrap;
 }
 
 .player {
@@ -417,8 +420,50 @@ button:active {
 }
 
 .point {
+	position: relative;
 	font-size: 5rem;
 	color: #FFF;
+}
+
+.point.flash::before {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	pointer-events: none;
+	content: attr(data-value);
+}
+
+.point.neg::before {
+	color: #F00;
+}
+
+#color-blind:checked ~ .up > .point.neg::before,
+#color-blind:checked ~ .dn > .point.neg::before {
+	color: #F70;
+}
+
+.point.pos::before {
+	color: #0F0;
+}
+
+#color-blind:checked ~ .up > .point.pos::before,
+#color-blind:checked ~ .dn > .point.pos::before {
+	color: #07F;
+}
+
+.point.flash::before {
+	animation: flash .5s ease-out;
+}
+
+@keyframes flash {
+	from {
+		opacity: 1;
+	} to {
+		font-size: 50rem;
+		opacity: 0;
+	}
 }
 
 .game > button,
