@@ -678,7 +678,7 @@ and (max-width: 480px) {
 	}
 
 	.expression {
-		margin: 3rem 0;
+		margin: 2rem 0;
 	}
 
 	.menu-btn.opened ~ .restart-btn {
