@@ -104,7 +104,7 @@ document.onreadystatechange = function () {
 	}
 
 	function buzz(e, touch) {
-		if (!e.target.value) return;
+		if (!e.target.value && !buzzerLock) return;
 		if (touch)
 			e.preventDefault();
 		e.stopPropagation();
@@ -170,6 +170,9 @@ function score(e, val) {
 	if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
 		setExpression((stats[0].pt > stats[1].pt ? 'EVEN' : 'ODD') + ' WINS');
 		buzzer.classList.add('win');
+		setTimeout(() => {
+			buzzerLock = false;
+		}, 2000);
 		return;
 	}
 	if (val > 0)

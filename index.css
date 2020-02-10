@@ -42,6 +42,7 @@ input[type=checkbox] {
 	visibility: hidden;
 	margin-right: -50%;
 	top: 50%;
+	left: 0;
 	width: 100%;
 	transform: translateY(-50%);
 }
@@ -68,17 +69,13 @@ input[type=checkbox] {
 }
 
 @keyframes fly-left {
-	from {
-		left: 0;
-	} to {
+	to {
 		left: -100%;
 	}
 }
 
 @keyframes fly-right {
-	from {
-		left: 0;
-	} to {
+	to {
 		left: 200%;
 	}
 }
@@ -273,7 +270,6 @@ button:active {
 	from {
 		height: 33rem;
 		width: 33rem;
-		opacity: 1;
 	} to {
 		height: 110rem;
 		width: 110rem;
@@ -314,13 +310,14 @@ button:active {
 	animation: sweep .75s linear;
 }
 
+.buzzer.win > .sweep {
+	animation: sweep 2s linear;
+}
+
 @keyframes sweep {
 	from {
 		width: 100%;
 		opacity: 0;
-	} to {
-		width: 0;
-		opacity: 1;
 	}
 }
 
@@ -390,6 +387,7 @@ button:active {
 	background-color: #000;
 	opacity: 0;
 	border: #FFF solid 1rem;
+	box-shadow: 0 0 0 1px #000;
 	pointer-events: none;
 	transition: opacity .3s;
 }
@@ -397,6 +395,7 @@ button:active {
 .buzzer.win > .restart-btn-lg {
 	opacity: 1;
 	pointer-events: auto;
+	animation: fade-in 2s;
 }
 
 .buzzer > .restart-btn-lg:active {
@@ -409,10 +408,14 @@ button:active {
 	animation: spin 12s linear infinite;
 }
 
-@keyframes spin {
+@keyframes fade-in {
 	from {
-		transform: rotate(0);
-	} to {
+		filter: brightness(0);
+	}
+}
+
+@keyframes spin {
+	to {
 		transform: rotate(360deg);
 	}
 }
@@ -493,7 +496,6 @@ button:active {
 	} to {
 		top: 0;
 		font-size: 50rem;
-		opacity: 0;
 	}
 }
 
@@ -567,7 +569,7 @@ button:active > svg {
 	border: .2rem solid #FFF;
 	border-radius: 50%;
 	cursor: pointer;
-	transition: bottom .4s, opacity .4s;
+	transition: bottom .4s, left .4s, opacity .4s;
 }
 
 #color-blind:checked ~ .color-blind-btn {
@@ -609,27 +611,18 @@ button:active > svg {
 	from {
 		left: 3rem;
 		opacity: 0;
-	} to {
-		left: 2rem;
-		opacity: 1;
 	}
 }
 
 @keyframes fade-out-right {
-	from {
-		left: 2rem;
-		opacity: 1;
-	} to {
+	to {
 		left: 3rem;
 		opacity: 0;
 	}
 }
 
 @keyframes fade-out-left {
-	from {
-		left: 2rem;
-		opacity: 1;
-	} to {
+	to {
 		left: 1rem;
 		opacity: 0;
 	}
@@ -646,7 +639,6 @@ and (max-width: 480px) {
 		from {
 			height: 40rem;
 			width: 40rem;
-			opacity: 1;
 		} to {
 			height: 110rem;
 			width: 110rem;
@@ -681,15 +673,27 @@ and (max-width: 480px) {
 		margin: 2rem 0;
 	}
 
+	.game > button,
+	.color-blind-btn,
+	.back-btn {
+		height: 6rem;
+		width: 6rem;
+	}
+
+	.menu-btn > svg {
+		width: 3.6rem;
+	}
+
 	.menu-btn.opened ~ .restart-btn {
-		left: 8rem;
+		left: 10rem;
 	}
 
 	.menu-btn.opened ~ .home-btn {
-		left: 14rem;
+		left: calc(100% - 16rem);
 	}
 
 	.menu-btn.opened ~ .color-blind-btn {
-		bottom: 8rem;
+		bottom: 2rem;
+		left: calc(100% - 8rem);
 	}
 }
