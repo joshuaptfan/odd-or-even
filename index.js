@@ -39,7 +39,7 @@ document.onreadystatechange = function () {
 				changePage('.home', '.about', 'left');
 				break;
 			case 'incr':
-				const pd = [10, 20, 30, 40, 50, 60, null];
+				const pd = [5, 10, 20, 30, 40, 50, null];
 				ptDelta = pd[(i => i < 0 ? 0 : i > 6 ? 6 : i)(pd.indexOf(ptDelta) + parseInt(e.target.value))];
 				document.querySelector('.setup-num.points').textContent = ptDelta;
 				localStorage.ptDelta = ptDelta || '\u221E';

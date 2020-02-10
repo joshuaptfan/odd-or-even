@@ -1,19 +1,22 @@
+const precacheURLs = [
+	'/',
+	'/index.html',
+	'/index.css',
+	'/index.js',
+	'/countdowns.js',
+	'/favicon.ico',
+	'/images/icon-192.png',
+	'/images/icon-512.png',
+	'/images/icon.svg',
+	'/images/infinity.svg'
+];
+
 // Service worker installation
 self.addEventListener('install', e => {
 	e.waitUntil(
 		caches.open('odd-or-even').then(cache => {
-			return cache.addAll([
-				'/',
-				'/index.html',
-				'/index.css',
-				'/index.js',
-				'/countdowns.js',
-				'/favicon.ico',
-				'/images/icon-192.png',
-				'/images/icon-512.png',
-				'/images/icon.svg',
-				'/images/infinity.svg'
-			]).then(() => self.skipWaiting());
+			return cache.addAll(precacheURLs)
+				.then(() => self.skipWaiting());
 		})
 	);
 });
