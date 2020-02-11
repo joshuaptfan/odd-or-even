@@ -7,7 +7,6 @@ var interval;
 
 document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
-	document.querySelector(':root').style.fontSize = window.innerHeight * .01 + 'px';
 	document.querySelector('.setup-num.points').textContent = ptDelta;
 	document.querySelector('#color-blind').checked = parseInt(localStorage.colorBlind) ? true : false;
 
@@ -18,7 +17,7 @@ document.onreadystatechange = function () {
 		canWarnTouch = false;
 		document.querySelector('.warn').textContent = 'PORTRAIT ORIENTATION RECOMMENDED';
 		warnPortrait();
-	});
+	}, { passive: true });
 	home.addEventListener('mousemove', warnTouch);
 	document.querySelector('.buzzer').addEventListener('touchstart', e => {
 		buzz(e, true);
@@ -81,10 +80,11 @@ document.onreadystatechange = function () {
 		else if (e.target.classList.contains('activated'))
 			e.target.classList.remove('fly-in-left', 'fly-in-right');
 	});
-	window.addEventListener('resize', () => {
-		document.querySelector(':root').style.fontSize = window.innerHeight * .01 + 'px';
-		warnPortrait();
-	});
+
+	if (!navigator.standalone && !window.matchMedia('(display-mode: fullscreen)').matches) {
+		resize();
+		window.addEventListener('resize', resize);
+	}
 
 	// Service worker caches page for offline use
 	if ('serviceWorker' in navigator)
@@ -110,6 +110,11 @@ document.onreadystatechange = function () {
 		e.stopPropagation();
 		if (buzzerLock) return;
 		score(e, parseInt(e.target.value));
+	}
+
+	function resize() {
+		document.querySelector(':root').style.fontSize = window.innerHeight * .01 + 'px';
+		warnPortrait();
 	}
 };
 
