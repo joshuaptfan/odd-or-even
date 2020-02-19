@@ -8,7 +8,8 @@ const precacheURLs = [
 	'/images/icon-192.png',
 	'/images/icon-512.png',
 	'/images/icon.svg',
-	'/images/infinity.svg'
+	'/images/infinity.svg',
+	'/images/hand.svg',
 ];
 
 // Service worker installation

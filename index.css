@@ -1,10 +1,7 @@
 :root {
-	font-size: 1vh;
-}
-
-body {
 	margin: 0;
 	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1vh;
 	font-weight: 700;
 	text-align: center;
 	color: #FFF;
@@ -122,14 +119,15 @@ button:active {
 }
 
 .home > button,
-.start-btn {
+.ready-btn,
+.game > .settings > button {
 	display: block;
 	margin: 5rem auto;
 	padding: 1.5rem;
 }
 
 .home > button:first-of-type,
-.start-btn {
+.ready-btn {
 	margin-top: 8rem;
 }
 
@@ -143,12 +141,12 @@ button:active {
 	right: 0;
 	width: max-content;
 	font-size: 3rem;
-	color: #A00;
+	color: #C00;
 	background-color: #000;
 }
 
 .home.warn-portrait > .warn {
-	color: #A90;
+	color: #ED0;
 }
 
 .home.activated.warn-touch > .warn,
@@ -164,12 +162,49 @@ button:active {
 	height: 2.3rem;
 	width: 100vw;
 	transform: translate(-50vw, -50%);
-	background: repeating-linear-gradient(135deg, #000, #000 2rem, #A00 2rem, #A00 4rem);
+	background: repeating-linear-gradient(135deg, #000 0 2rem, #C00 2rem 4rem);
 	content: '';
 }
 
 .home.warn-portrait > .warn::before {
-	background: repeating-linear-gradient(135deg, #000, #000 2rem, #A90 2rem, #A90 4rem);
+	background: repeating-linear-gradient(135deg, #000 0 2rem, #ED0 2rem 4rem);
+}
+
+.home > .fullscreen-btn {
+	display: none;
+	position: absolute;
+	margin: 0;
+	padding: .8rem;
+	top: calc(50% + 43rem);
+	left: 50%;
+	height: 5rem;
+	width: 5rem;
+	transform: translateX(-50%);
+	transition: opacity .2s;
+}
+
+.home > .fullscreen-btn > svg {
+	stroke-linecap: square;
+}
+
+.home.deactivated > .fullscreen-btn {
+	opacity: 0;
+}
+
+html:fullscreen .home > .fullscreen-btn {
+	background-color: #FFF;
+}
+
+html:-webkit-full-screen .home > .fullscreen-btn {
+	background-color: #FFF;
+}
+
+html:fullscreen .home > .fullscreen-btn > svg {
+	stroke: #000;
+}
+
+html:-webkit-full-screen .home > .fullscreen-btn > svg {
+	stroke: #000;
 }
 
 .incr {
@@ -190,7 +225,6 @@ button:active {
 
 .setup-num:empty::before {
 	position: absolute;
-	top: 0;
 	left: 0;
 	height: 100%;
 	width: 100%;
@@ -202,6 +236,54 @@ button:active {
 	height: 100%;
 }
 
+.border {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	box-sizing: border-box;
+	border: 1rem solid #FFF;
+	border-radius: 4.5rem;
+	pointer-events: none;
+	transition: opacity .3s;
+}
+
+.game.tutorial > .border {
+	z-index: 4;
+	opacity: 1;
+}
+
+.border > svg {
+	position: absolute;
+	bottom: -1rem;
+	right: -1rem;
+	height: 17.5rem;
+	width: 23.5rem;
+	fill: #000;
+}
+
+.border > svg:last-of-type {
+	display: none;
+}
+
+.border::before,
+.border::after {
+	position: absolute;
+	padding: 0 1rem;
+	top: 50%;
+	left: .5rem;
+	transform: translate(-50%, -50%) rotate(270deg);
+	font-size: 3rem;
+	background-color: #000;
+	content: attr(data-text);
+}
+
+.border::after {
+	left: auto;
+	right: .5rem;
+	transform: translate(50%, -50%) rotate(90deg);
+}
+
 .buzzer {
 	position: absolute;
 	top: 50%;
@@ -209,6 +291,48 @@ button:active {
 	height: 33rem;
 	width: 33rem;
 	transform: translate(-50%, -50%);
+}
+
+.game.mark-up > .buzzer::before,
+.game.mark-up > .buzzer::after,
+.game.mark-dn > .buzzer::before,
+.game.mark-dn > .buzzer::after {
+	position: absolute;
+	z-index: 1;
+	left: 50%;
+	height: 10rem;
+	width: 10rem;
+	opacity: .3;
+	background: no-repeat center/100% url(images/hand.svg);
+	pointer-events: none;
+	content: '';
+	animation: blink-hand 1s infinite;
+}
+
+.game.mark-up > .buzzer::before {
+	top: 27%;
+	transform: translate(-60%, -50%) rotate(180deg);
+}
+
+.game.mark-up > .buzzer::after {
+	top: 95%;
+	transform: translate(-40%, -50%);
+}
+
+.game.mark-dn > .buzzer::before {
+	top: 5%;
+	transform: translate(-60%, -50%) rotate(180deg);
+}
+
+.game.mark-dn > .buzzer::after {
+	top: 73%;
+	transform: translate(-40%, -50%);
+}
+
+@keyframes blink-hand {
+	50% {
+		opacity: 1;
+	}
 }
 
 .wave {
@@ -226,7 +350,6 @@ button:active {
 
 .wave::before {
 	position: absolute;
-	top: 0;
 	left: 50%;
 	height: 0;
 	width: 0;
@@ -236,7 +359,7 @@ button:active {
 	content: '';
 }
 
-#color-blind:checked ~ .buzzer > .wave::before {
+.game.color-blind > .buzzer > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #F70 75%);
 }
 
@@ -244,7 +367,7 @@ button:active {
 	background: radial-gradient(circle farthest-side, transparent 50%, #0F0 75%);
 }
 
-#color-blind:checked ~ .buzzer.pos > .wave::before {
+.game.color-blind > .buzzer.pos > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #07F 75%);
 }
 
@@ -323,7 +446,6 @@ button:active {
 
 .buzzer > button {
 	position: absolute;
-	top: 0;
 	left: 0;
 	height: 100%;
 	width: 100%;
@@ -334,7 +456,7 @@ button:active {
 	border-radius: 50%;
 }
 
-#color-blind:checked ~ .buzzer > .minus {
+.game.color-blind > .buzzer > .minus {
 	background-color: #B50;
 }
 
@@ -343,7 +465,7 @@ button:active {
 	background-color: #F00;
 }
 
-#color-blind:checked ~ .buzzer > .minus.active {
+.game.color-blind > .buzzer > .minus.active {
 	background-color: #F70;
 }
 
@@ -370,7 +492,7 @@ button:active {
 	border: 1rem solid #000;
 }
 
-#color-blind:checked ~ .buzzer > .plus {
+.game.color-blind > .buzzer > .plus {
 	background-color: #05B;
 }
 
@@ -378,11 +500,11 @@ button:active {
 	background-color: #0F0;
 }
 
-#color-blind:checked ~ .buzzer > .plus.active {
+.game.color-blind > .buzzer > .plus.active {
 	background-color: #07F;
 }
 
-.buzzer > .restart-btn-lg {
+.buzzer > .restart-btn {
 	padding: 2rem;
 	background-color: #000;
 	opacity: 0;
@@ -392,17 +514,17 @@ button:active {
 	transition: opacity .3s;
 }
 
-.buzzer.win > .restart-btn-lg {
+.buzzer.win > .restart-btn {
 	opacity: 1;
 	pointer-events: auto;
 	animation: fade-in 2s;
 }
 
-.buzzer > .restart-btn-lg:active {
+.buzzer > .restart-btn:active {
 	background-color: #FFF;
 }
 
-.restart-btn-lg > svg {
+.buzzer > .restart-btn > svg {
 	stroke-linejoin: miter;
 	stroke-linecap: butt;
 	animation: spin 12s linear infinite;
@@ -447,9 +569,50 @@ button:active {
 	white-space: nowrap;
 }
 
+u {
+	position: relative;
+	text-decoration: none;
+}
+
+.game.mark-up > div > .expression > u::before,
+.game.mark-dn > div > .expression > u::before {
+	position: absolute;
+	bottom: 0;
+	height: 1rem;
+	width: 100%;
+	background-color: #FF0;
+	content: '';
+}
+
 .player {
+	margin: 0 auto;
+	padding: 0 .5rem;
+	width: max-content;
 	font-size: 4rem;
 	color: #AAA;
+	border-radius: .5rem;
+}
+
+.game.mark-up > .up > .player,
+.game.mark-dn > .dn > .player {
+	position: relative;
+	animation: blink-player 1s infinite;
+}
+
+.game.mark-up > .up > .player::before,
+.game.mark-dn > .dn > .player::before {
+	position: absolute;
+	margin-right: .3rem;
+	right: 100%;
+	color: #FF0;
+	content: '=';
+}
+
+@keyframes blink-player {
+	50% {
+		color: #000;
+		background-color: #FF0;
+	}
 }
 
 .point {
@@ -472,8 +635,8 @@ button:active {
 	color: #F00;
 }
 
-#color-blind:checked ~ .up > .point.neg::before,
-#color-blind:checked ~ .dn > .point.neg::before {
+.game.color-blind > .up > .point.neg::before,
+.game.color-blind > .dn > .point.neg::before {
 	color: #F70;
 }
 
@@ -481,8 +644,8 @@ button:active {
 	color: #0F0;
 }
 
-#color-blind:checked ~ .up > .point.pos::before,
-#color-blind:checked ~ .dn > .point.pos::before {
+.game.color-blind > .up > .point.pos::before,
+.game.color-blind > .dn > .point.pos::before {
 	color: #07F;
 }
 
@@ -500,7 +663,7 @@ button:active {
 }
 
 .game > button,
-.color-blind-btn,
+.close-btn,
 .back-btn {
 	position: absolute;
 	z-index: 2;
@@ -526,15 +689,37 @@ button:active > svg {
 	stroke: #000;
 }
 
+.game > .start-btn {
+	z-index: 4;
+	bottom: 2rem;
+	left: auto;
+	right: 2rem;
+	height: 9rem;
+	width: 15rem;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .3s;
+}
+
+.game.tutorial > .start-btn {
+	opacity: 1;
+	pointer-events: auto;
+}
+
 .game > .menu-btn {
 	z-index: 3;
+	transition: opacity .3s;
+}
+
+.game.tutorial > .menu-btn {
+	opacity: 0;
 }
 
 .menu-btn > svg {
 	width: 3rem;
 }
 
-.restart-btn {
+.game > .restart-btn {
 	opacity: 0;
 	transition: left .2s, opacity .2s;
 }
@@ -549,8 +734,7 @@ button:active > svg {
 	transition: left .3s, opacity .3s;
 }
 
-.home-btn > svg,
-.color-blind-btn > svg {
+.home-btn > svg {
 	fill: #FFF;
 }
 
@@ -563,27 +747,68 @@ button:active > svg {
 	opacity: 1;
 }
 
-.color-blind-btn {
-	box-sizing: border-box;
+.settings-btn {
 	opacity: 0;
-	border: .2rem solid #FFF;
-	border-radius: 50%;
-	cursor: pointer;
 	transition: bottom .4s, left .4s, opacity .4s;
 }
 
-#color-blind:checked ~ .color-blind-btn {
+.menu-btn.opened ~ .settings-btn {
+	bottom: 9rem;
+	opacity: 1;
+}
+
+.game > .settings {
+	position: absolute;
+	top: 0;
+	height: 200rem;
+	width: 100%;
+	background: linear-gradient(#0006 50%, #000 57%);
+	opacity: 0;
+	pointer-events: none;
+	transition: top .4s, opacity .4s;
+}
+
+.game.settings > .settings {
+	z-index: 4;
+	top: -50rem;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.game > .settings > button {
+	margin: 2rem auto;
+}
+
+.game > .settings > .color-blind-btn {
+	margin-top: 126rem;
+}
+
+.game.color-blind > .settings > .color-blind-btn {
+	color: #000;
 	background-color: #FFF;
 }
 
-#color-blind:checked ~ .color-blind-btn > svg {
-	stroke: #000;
-	fill: #000;
+.game > .settings > .fullscreen-btn {
+	display: none;
 }
 
-.menu-btn.opened ~ .color-blind-btn {
-	bottom: 9rem;
-	opacity: 1;
+html:fullscreen .settings > .fullscreen-btn {
+	color: #000;
+	background-color: #FFF;
+}
+
+html:-webkit-full-screen .settings > .fullscreen-btn {
+	color: #000;
+	background-color: #FFF;
+}
+
+.game > .settings > .close-btn {
+	margin: 0;
+	padding: .8rem;
+	top: calc(50% + 43rem);
+	bottom: auto;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .back-btn {
@@ -591,26 +816,51 @@ button:active > svg {
 }
 
 .setup.activated ~ .back-btn,
-.tutorial.activated ~ .back-btn,
-.about.activated ~ .back-btn {
+.about.activated ~ .back-btn,
+.game.tutorial.activated + .back-btn {
 	visibility: visible;
+}
+
+.home.deactivated + .setup.activated ~ .back-btn,
+.home.deactivated ~ .about.activated ~ .back-btn {
 	animation: fade-in-left .5s;
 }
 
-.setup.deactivated ~ .back-btn,
-.tutorial.deactivated ~ .back-btn,
-.about.deactivated ~ .back-btn {
-	animation: fade-out-right .5s;
+.setup.deactivated ~ .game.tutorial.activated + .back-btn {
+	animation: fade-out-in-left .5s;
 }
 
-.game.activated ~ .back-btn {
-	animation: fade-out-left .5s;
+.setup.activated ~ .game.tutorial.deactivated + .back-btn {
+	animation: fade-out-in-right .5s;
+}
+
+.setup.deactivated ~ .back-btn,
+.about.deactivated ~ .back-btn {
+	animation: fade-out-right .5s;
 }
 
 @keyframes fade-in-left {
 	from {
 		left: 3rem;
 		opacity: 0;
+	}
+}
+
+@keyframes fade-out-in-left {
+	50% {
+		left: 1rem;
+		opacity: 0;
+	} 51% {
+		left: 3rem;
+	}
+}
+
+@keyframes fade-out-in-right {
+	50% {
+		left: 3rem;
+		opacity: 0;
+	} 51% {
+		left: 1rem;
 	}
 }
 
@@ -621,18 +871,39 @@ button:active > svg {
 	}
 }
 
-@keyframes fade-out-left {
-	to {
-		left: 1rem;
-		opacity: 0;
-	}
-}
-
 @media only screen
 and (max-width: 480px) {
+	.home > .fullscreen-btn,
+	.game > .settings > .close-btn {
+		top: calc(50% + 42rem);
+	}
+
+	.border {
+		border-radius: 5rem;
+	}
+
+	.border > svg {
+		height: 14.5rem;
+		width: 18.5rem;
+	}
+
+	.border > svg:first-of-type {
+		display: none;
+	}
+
+	.border > svg:last-of-type {
+		display: block;
+	}
+
 	.buzzer {
 		height: 40rem;
 		width: 40rem;
+	}
+
+	.game.tutorial > .buzzer::before,
+	.game.tutorial > .buzzer::after {
+		height: 12rem;
+		width: 12rem;
 	}
 
 	@keyframes wave {
@@ -673,11 +944,18 @@ and (max-width: 480px) {
 		margin: 2rem 0;
 	}
 
+	.home > .fullscreen-btn,
 	.game > button,
-	.color-blind-btn,
+	.close-btn,
 	.back-btn {
 		height: 6rem;
 		width: 6rem;
+	}
+
+	.game > .start-btn {
+		font-size: 3.2rem;
+		height: 6rem;
+		width: 10rem;
 	}
 
 	.menu-btn > svg {
@@ -692,7 +970,7 @@ and (max-width: 480px) {
 		left: calc(100% - 16rem);
 	}
 
-	.menu-btn.opened ~ .color-blind-btn {
+	.menu-btn.opened ~ .settings-btn {
 		bottom: 2rem;
 		left: calc(100% - 8rem);
 	}

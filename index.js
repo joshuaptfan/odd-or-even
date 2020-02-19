@@ -1,14 +1,17 @@
-var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 20);
+var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 10);
 var stats = [];
 var currPlayer = 0;
-var buzzerLock = true;
+var buzzerLock = false;
+var isTutorial = true;
 var canWarnTouch = true;
 var interval;
 
 document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
+	const game = document.querySelector('.game');
 	document.querySelector('.setup-num.points').textContent = ptDelta;
-	document.querySelector('#color-blind').checked = parseInt(localStorage.colorBlind) ? true : false;
+	if (parseInt(localStorage.colorBlind))
+		game.classList.add('color-blind');
 
 	home.addEventListener('touchstart', () => {
 		home.removeEventListener('touchstart', arguments.callee);
@@ -31,11 +34,11 @@ document.onreadystatechange = function () {
 			case 'play-btn':
 				changePage('.home', '.setup', 'left');
 				break;
-			case 'tutorial-btn':
-				changePage('.home', '.tutorial', 'left');
-				break;
 			case 'about-btn':
 				changePage('.home', '.about', 'left');
+				break;
+			case 'fullscreen-btn':
+				toggleFullscreen();
 				break;
 			case 'incr':
 				const pd = [5, 10, 20, 30, 40, 50, null];
@@ -43,34 +46,44 @@ document.onreadystatechange = function () {
 				document.querySelector('.setup-num.points').textContent = ptDelta;
 				localStorage.ptDelta = ptDelta || '\u221E';
 				break;
-			case 'start-btn':
+			case 'ready-btn':
 				changePage('.setup', '.game', 'left');
+				initTutorial();
+				break;
+			case 'start-btn':
+				isTutorial = false;
+				game.classList.remove('tutorial', 'mark-up', 'mark-dn');
 				initGame();
 				break;
 			case 'menu-btn':
 				e.target.classList.toggle('opened');
 				break;
 			case 'restart-btn':
-			case 'restart-btn-lg':
 				initGame();
 				break;
 			case 'home-btn':
 				document.querySelector('.menu-btn').classList.remove('opened');
 				changePage('.game', '.home', 'right');
 				break;
+			case 'settings-btn':
+			case 'close-btn':
+				game.classList.toggle('settings');
+				break;
 			case 'color-blind-btn':
-				localStorage.colorBlind = document.querySelector('#color-blind').checked ? 0 : 1;
+				game.classList.toggle('color-blind');
+				localStorage.colorBlind = game.classList.contains('color-blind') ? 1 : 0;
 				break;
 			case 'back-btn':
 				switch (document.querySelector('.activated').classList.item(1)) {
 					case 'setup':
 						changePage('.setup', '.home', 'right');
 						break;
-					case 'tutorial':
-						changePage('.tutorial', '.home', 'right');
-						break;
 					case 'about':
 						changePage('.about', '.home', 'right');
+						break;
+					case 'game':
+						game.classList.remove('mark-up', 'mark-dn');
+						changePage('.game', '.setup', 'right');
 				}
 		}
 	});
@@ -81,14 +94,33 @@ document.onreadystatechange = function () {
 			e.target.classList.remove('fly-in-left', 'fly-in-right');
 	});
 
-	if (!navigator.standalone && !window.matchMedia('(display-mode: fullscreen)').matches) {
+	if (!window.matchMedia('(display-mode: fullscreen)').matches && !navigator.standalone) {
 		resize();
 		window.addEventListener('resize', resize);
+		if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) return;
+		home.querySelector('.fullscreen-btn').style.display = 'block';
+		game.querySelector('.fullscreen-btn').style.display = 'block';
+		game.querySelector('.color-blind-btn').style.marginTop = '119rem';
 	}
 
 	// Service worker caches page for offline use
 	if ('serviceWorker' in navigator)
 		navigator.serviceWorker.register('/sw.js');
+
+	function changePage(deactivated, activated, direction) {
+		document.querySelector(deactivated).classList.add('deactivated', 'fly-out-' + direction);
+		document.querySelector(activated).classList.add('activated', 'fly-in-' + direction);
+	}
+
+	function toggleFullscreen() {
+		const docEl = document.documentElement;
+		const requestFullscreen = docEl.requestFullscreen || docEl.webkitRequestFullScreen;
+		const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
+		if (!document.fullscreenElement && !document.webkitFullscreenElement)
+			requestFullscreen.call(docEl);
+		else
+			exitFullscreen.call(document);
+	}
 
 	function warnTouch() {
 		home.removeEventListener('mousemove', warnTouch);
@@ -118,26 +150,32 @@ document.onreadystatechange = function () {
 	}
 };
 
-function changePage(deactivated, activated, direction) {
-	document.querySelector(deactivated).classList.add('deactivated', 'fly-out-' + direction);
-	document.querySelector(activated).classList.add('activated', 'fly-in-' + direction);
+function initTutorial() {
+	isTutorial = true;
+	document.querySelector('.game').classList.add('tutorial');
+	document.querySelector('.buzzer').className = 'buzzer';
+	initPlayers();
+	genExpression();
 }
 
-function initGame() {
+function initPlayers() {
 	const rand = Math.trunc(Math.random() * 2);
 	document.querySelector('.up > .player').textContent = rand ? 'Even' : 'Odd';
 	let point = document.querySelector('.up > .point');
-	point.textContent = 0;
 	point.id = 'pt' + (rand ? 0 : 1);
+	point.textContent = 0;
 	document.querySelector('.dn > .player').textContent = rand ? 'Odd' : 'Even';
 	point = document.querySelector('.dn > .point');
-	point.textContent = 0;
 	point.id = 'pt' + (rand ? 1 : 0);
+	point.textContent = 0;
 	stats = [
 		{ p: 0, pt: 0, t: 0, d: rand ? 'up' : 'dn' },
 		{ p: 1, pt: 0, t: 0, d: rand ? 'dn' : 'up' }
 	];
+}
 
+function initGame() {
+	initPlayers();
 	buzzerLock = true;
 	const buzzer = document.querySelector('.buzzer');
 	buzzer.className = 'buzzer';
@@ -172,7 +210,9 @@ function score(e, val) {
 
 	buzzerLock = true;
 	const buzzer = document.querySelector('.buzzer');
-	if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
+	if (isTutorial)
+		document.querySelector('.game').classList.remove('mark-up', 'mark-dn');
+	else if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
 		setExpression((stats[0].pt > stats[1].pt ? 'EVEN' : 'ODD') + ' WINS');
 		buzzer.classList.add('win');
 		setTimeout(() => {
@@ -203,6 +243,8 @@ function genExpression() {
 			break;
 		}
 	}
+	if (isTutorial)
+		document.querySelector('.game').classList.add('mark-' + (stats[currPlayer].d));
 
 	let ex = '';
 	rand = Math.random();
@@ -211,7 +253,7 @@ function genExpression() {
 		const numSize = [.033, .075, .122, .17, .215, .252, .276, .29, .3];
 		let i = -1;
 		while (rand > numSize[++i]);
-		ex = (Math.random() * 10 ** i & 0x7FFFFFFE) + currPlayer;
+		ex += (Math.random() * 10 ** i & 0x7FFFFFFE) + currPlayer;
 	} else {
 		// Generate additive expression
 		let numNums = Math.ceil(Math.random() * 4);
@@ -223,11 +265,11 @@ function genExpression() {
 		}
 		ex += (n => !n ? '' : (n < 0 ? '\u2212' : '+') + Math.abs(n))((currPlayer - sum % 2) + (Math.random() * 17 & 0xFE) - 8);
 	}
-	setExpression(ex);
+	setExpression(!isTutorial ? ex : ex.replace(/[13579](?=\D|$)/gu, '<u>$&</u>'));
 }
 
 function setExpression(ex) {
 	document.querySelectorAll('.expression').forEach(el => {
-		el.textContent = ex;
+		el.innerHTML = ex;
 	});
 }
