@@ -1,6 +1,6 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'>
-	<circle cx='14' cy='14' r='12.5' stroke='#FFF' fill='#000'/>
-	<circle cx='14' cy='14' r='4' fill='#FFF'/>
-	<path d='M4,14 h4 m12,0 h4' stroke='#FFF'/>
-	<path d='M12,14 h4 m-2,-2 v4' stroke='#000'/>
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='-14 -14 28 28'>
+	<circle r='12.5' stroke='#FFF'/>
+	<circle r='4.5' fill='#FFF'/>
+	<circle r='1.5' stroke='#000' fill='none'/>
+	<path d='M-9.5,-1.5 l3,3 m-3,0 l3,-3 m13,0 l3,3 m-3,0 l3,-3' stroke='#FFF'/>
 </svg>

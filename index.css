@@ -35,8 +35,8 @@ input[type=checkbox] {
 }
 
 .page {
+	display: none;
 	position: fixed;
-	visibility: hidden;
 	margin-right: -50%;
 	top: 50%;
 	left: 0;
@@ -46,7 +46,7 @@ input[type=checkbox] {
 
 .activated,
 .deactivated {
-	visibility: visible;
+	display: initial;
 }
 
 .fly-out-left {
@@ -118,8 +118,17 @@ button:active {
 	background-color: #FFF;
 }
 
+button:disabled {
+	color: #444;
+	border-color: #444;
+}
+
+button:disabled > svg {
+	stroke: #444;
+}
+
 .home > button,
-.ready-btn,
+.start-btn,
 .game > .settings > button {
 	display: block;
 	margin: 5rem auto;
@@ -127,13 +136,13 @@ button:active {
 }
 
 .home > button:first-of-type,
-.ready-btn {
+.start-btn {
 	margin-top: 8rem;
 }
 
 .warn {
+	display: none;
 	position: absolute;
-	visibility: hidden;
 	margin: 0 auto;
 	padding: 0 1rem;
 	bottom: -8rem;
@@ -151,7 +160,7 @@ button:active {
 
 .home.activated.warn-touch > .warn,
 .home.activated.warn-portrait > .warn {
-	visibility: visible;
+	display: initial;
 }
 
 .warn::before {
@@ -244,7 +253,6 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	box-sizing: border-box;
 	border: 1rem solid #FFF;
 	border-radius: 4.5rem;
-	pointer-events: none;
 	transition: opacity .3s;
 }
 
@@ -253,16 +261,20 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	opacity: 1;
 }
 
+.game.tutorial[data-step^='1'] > .border {
+	pointer-events: none;
+}
+
 .border > svg {
 	position: absolute;
 	bottom: -1rem;
-	right: -1rem;
-	height: 17.5rem;
-	width: 23.5rem;
+	left: -1rem;
+	height: 14.5rem;
+	width: 14.5rem;
 	fill: #000;
 }
 
-.border > svg:last-of-type {
+.border > svg.sm {
 	display: none;
 }
 
@@ -291,47 +303,53 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	height: 33rem;
 	width: 33rem;
 	transform: translate(-50%, -50%);
+	transition: filter .2s;
 }
 
-.game.mark-up > .buzzer::before,
-.game.mark-up > .buzzer::after,
-.game.mark-dn > .buzzer::before,
-.game.mark-dn > .buzzer::after {
+.game.tutorial[data-step^='0'] > .buzzer {
+	filter: blur(2rem);
+}
+
+.game.tutorial[data-step^='1'].mark-up > .buzzer::before,
+.game.tutorial[data-step^='1'].mark-up > .buzzer::after,
+.game.tutorial[data-step^='1'].mark-dn > .buzzer::before,
+.game.tutorial[data-step^='1'].mark-dn > .buzzer::after {
 	position: absolute;
 	z-index: 1;
 	left: 50%;
 	height: 10rem;
 	width: 10rem;
-	opacity: .3;
 	background: no-repeat center/100% url(images/hand.svg);
 	pointer-events: none;
 	content: '';
 	animation: blink-hand 1s infinite;
 }
 
-.game.mark-up > .buzzer::before {
+.game.tutorial[data-step^='1'].mark-up > .buzzer::before {
 	top: 27%;
 	transform: translate(-60%, -50%) rotate(180deg);
 }
 
-.game.mark-up > .buzzer::after {
-	top: 95%;
+.game.tutorial[data-step^='1'].mark-up > .buzzer::after {
+	top: 73%;
+	left: 84%;
 	transform: translate(-40%, -50%);
 }
 
-.game.mark-dn > .buzzer::before {
-	top: 5%;
+.game.tutorial[data-step^='1'].mark-dn > .buzzer::before {
+	top: 27%;
+	left: 16%;
 	transform: translate(-60%, -50%) rotate(180deg);
 }
 
-.game.mark-dn > .buzzer::after {
+.game.tutorial[data-step^='1'].mark-dn > .buzzer::after {
 	top: 73%;
 	transform: translate(-40%, -50%);
 }
 
 @keyframes blink-hand {
 	50% {
-		opacity: 1;
+		opacity: .3;
 	}
 }
 
@@ -351,9 +369,9 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 .wave::before {
 	position: absolute;
 	left: 50%;
-	height: 0;
-	width: 0;
-	transform: translate(-50%, -50%);
+	height: 33rem;
+	width: 33rem;
+	transform: translate(-50%, -50%) scale(0);
 	background: radial-gradient(circle farthest-side, transparent 50%, #F00 75%);
 	border-radius: 50%;
 	content: '';
@@ -391,11 +409,9 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 
 @keyframes wave {
 	from {
-		height: 33rem;
-		width: 33rem;
+		transform: translate(-50%, -50%) scale(1);
 	} to {
-		height: 110rem;
-		width: 110rem;
+		transform: translate(-50%, -50%) scale(3.3);
 		opacity: 0;
 	}
 }
@@ -456,7 +472,7 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	border-radius: 50%;
 }
 
-.game.color-blind > .buzzer > .minus {
+.game.color-blind > .buzzer > .no {
 	background-color: #B50;
 }
 
@@ -465,43 +481,51 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	background-color: #F00;
 }
 
-.game.color-blind > .buzzer > .minus.active {
+.game.color-blind > .buzzer > .no.active {
 	background-color: #F70;
 }
 
-.buzzer > .minus::before,
-.buzzer > .minus::after {
+.buzzer > .no::before,
+.buzzer > .no::after {
 	position: absolute;
 	top: 50%;
 	left: 16%;
 	transform: translate(-50%, -50%);
 	pointer-events: none;
-	content: '\2212';
+	content: '\D7';
 }
 
-.buzzer > .minus::after {
+.buzzer > .no::after {
 	left: 84%;
 }
 
-.buzzer > .plus {
-	top: 30%;
-	left: 30%;
-	height: 40%;
-	width: 40%;
+.buzzer > .yes {
+	top: 28.5%;
+	left: 28.5%;
+	height: 43%;
+	width: 43%;
 	background-color: #0B0;
 	border: 1rem solid #000;
 }
 
-.game.color-blind > .buzzer > .plus {
+.game.color-blind > .buzzer > .yes {
 	background-color: #05B;
 }
 
-.buzzer > .plus.active {
+.buzzer > .yes > svg {
+	stroke: #000;
+}
+
+.buzzer > .yes.active {
 	background-color: #0F0;
 }
 
-.game.color-blind > .buzzer > .plus.active {
+.game.color-blind > .buzzer > .yes.active {
 	background-color: #07F;
+}
+
+.buzzer > .yes.active > svg {
+	stroke: #FFF;
 }
 
 .buzzer > .restart-btn {
@@ -542,23 +566,40 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	}
 }
 
-.up,
-.dn {
+.team {
 	position: absolute;
 	z-index: 1;
 	margin-right: -50%;
 	left: 50%;
-	height: calc(50% - 20.5rem);
+	height: calc(50% - 18.5rem);
+	width: 100%;
 	font-size: 5rem;
 }
 
-.up {
-	top: 2rem;
+.game.tutorial > .team::before {
+	position: absolute;
+	z-index: 2;
+	margin-right: -50%;
+	padding: 1rem;
+	top: -8rem;
+	left: 50%;
+	line-height: 4rem;
+	transform: translateX(-50%);
+	font-size: 3rem;
+	white-space: pre-wrap;
+	background-color: #000D;
+	border: .5rem solid #FF0;
+	border-radius: 1rem;
+	content: attr(data-text);
+}
+
+.team.up {
+	top: 0;
 	transform: translateX(-50%) rotate(180deg);
 }
 
-.dn {
-	bottom: 2rem;
+.team.dn {
+	bottom: 0;
 	transform: translateX(-50%);
 }
 
@@ -569,21 +610,6 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	white-space: nowrap;
 }
 
-u {
-	position: relative;
-	text-decoration: none;
-}
-
-.game.mark-up > div > .expression > u::before,
-.game.mark-dn > div > .expression > u::before {
-	position: absolute;
-	bottom: 0;
-	height: 1rem;
-	width: 100%;
-	background-color: #FF0;
-	content: '';
-}
-
 .player {
 	margin: 0 auto;
 	padding: 0 .5rem;
@@ -591,16 +617,17 @@ u {
 	font-size: 4rem;
 	color: #AAA;
 	border-radius: .5rem;
+	transition: filter .2s;
 }
 
-.game.mark-up > .up > .player,
-.game.mark-dn > .dn > .player {
+.game.tutorial[data-step*='1'].mark-up > .up > .player,
+.game.tutorial[data-step*='1'].mark-dn > .dn > .player {
 	position: relative;
 	animation: blink-player 1s infinite;
 }
 
-.game.mark-up > .up > .player::before,
-.game.mark-dn > .dn > .player::before {
+.game.tutorial[data-step*='1'].mark-up > .up > .player::before,
+.game.tutorial[data-step*='1'].mark-dn > .dn > .player::before {
 	position: absolute;
 	margin-right: .3rem;
 	right: 100%;
@@ -619,7 +646,13 @@ u {
 	position: relative;
 	font-size: 5rem;
 	color: #FFF;
+	transition: filter .2s;
 }
+
+.game.tutorial[data-step='00'] > .team > .player, 
+.game.tutorial[data-step='00'] > .team > .point {
+	filter: blur(2rem);
+} 
 
 .point.flash::before {
 	position: absolute;
@@ -635,8 +668,7 @@ u {
 	color: #F00;
 }
 
-.game.color-blind > .up > .point.neg::before,
-.game.color-blind > .dn > .point.neg::before {
+.game.color-blind > .team > .point.neg::before {
 	color: #F70;
 }
 
@@ -644,8 +676,7 @@ u {
 	color: #0F0;
 }
 
-.game.color-blind > .up > .point.pos::before,
-.game.color-blind > .dn > .point.pos::before {
+.game.color-blind > .team > .point.pos::before {
 	color: #07F;
 }
 
@@ -658,8 +689,60 @@ u {
 		opacity: 1;
 	} to {
 		top: 0;
-		font-size: 50rem;
+		transform: translate(-50%, -50%) scale(10);
 	}
+}
+
+.lead {
+	position: absolute;
+	margin-top: -1.5rem;
+	left: 0;
+	border: 1.5rem solid transparent;
+	border-left: 1.5rem solid #AAA;
+	transition: top .1s;
+}
+
+.lead::before {
+	position: absolute;
+	top: -1.5rem;
+	left: calc(100vw - 4.5rem);
+	border: 1.5rem solid transparent;
+	border-right: 1.5rem solid #AAA;
+	content: '';
+}
+
+.game.tutorial > .lead {
+	display: none;
+}
+
+.game > progress {
+	display: none;
+	position: absolute;
+	-webkit-appearance: none;
+	bottom: 2rem;
+	right: 4rem;
+	height: 1rem;
+	width: 14rem;
+	background-color: #444;
+	border: none;
+	border-radius: 1rem;
+}
+
+::-webkit-progress-bar {
+	background-color: #444;
+	border-radius: 1rem;
+}
+
+::-webkit-progress-value {
+	background-color: #FFF;
+	border-radius: 1rem;
+	transition: width .2s;
+}
+
+::-moz-progress-bar {
+	background-color: #FFF;
+	border-radius: 1rem;
+	transition: width .2s;
 }
 
 .game > button,
@@ -689,26 +772,30 @@ button:active > svg {
 	stroke: #000;
 }
 
-.game > .start-btn {
+.game > .prev-btn,
+.game > .next-btn {
+	display: none;
 	z-index: 4;
-	bottom: 2rem;
-	left: auto;
-	right: 2rem;
-	height: 9rem;
-	width: 15rem;
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity .3s;
+	bottom: 50%;
+	left: 6rem;
+	height: 6rem;
+	width: 6rem;
+	transform: translateY(50%);
 }
 
-.game.tutorial > .start-btn {
-	opacity: 1;
-	pointer-events: auto;
+.game > .next-btn {
+	left: auto;
+	right: 6rem;
+}
+
+.game.tutorial > progress,
+.game.tutorial > .prev-btn,
+.game.tutorial > .next-btn {
+	display: initial;
 }
 
 .game > .menu-btn {
 	z-index: 3;
-	transition: opacity .3s;
 }
 
 .game.tutorial > .menu-btn {
@@ -812,31 +899,23 @@ html:-webkit-full-screen .settings > .fullscreen-btn {
 }
 
 .back-btn {
-	visibility: hidden;
+	display: none;
 }
 
 .setup.activated ~ .back-btn,
 .about.activated ~ .back-btn,
 .game.tutorial.activated + .back-btn {
-	visibility: visible;
-}
-
-.home.deactivated + .setup.activated ~ .back-btn,
-.home.deactivated ~ .about.activated ~ .back-btn {
+	display: initial;
 	animation: fade-in-left .5s;
-}
-
-.setup.deactivated ~ .game.tutorial.activated + .back-btn {
-	animation: fade-out-in-left .5s;
-}
-
-.setup.activated ~ .game.tutorial.deactivated + .back-btn {
-	animation: fade-out-in-right .5s;
 }
 
 .setup.deactivated ~ .back-btn,
 .about.deactivated ~ .back-btn {
 	animation: fade-out-right .5s;
+}
+
+.game.activated + .back-btn {
+	animation: fade-out-left .5s;
 }
 
 @keyframes fade-in-left {
@@ -846,27 +925,16 @@ html:-webkit-full-screen .settings > .fullscreen-btn {
 	}
 }
 
-@keyframes fade-out-in-left {
-	50% {
-		left: 1rem;
-		opacity: 0;
-	} 51% {
-		left: 3rem;
-	}
-}
-
-@keyframes fade-out-in-right {
-	50% {
-		left: 3rem;
-		opacity: 0;
-	} 51% {
-		left: 1rem;
-	}
-}
-
 @keyframes fade-out-right {
 	to {
 		left: 3rem;
+		opacity: 0;
+	}
+}
+
+@keyframes fade-out-left {
+	to {
+		left: 1rem;
 		opacity: 0;
 	}
 }
@@ -882,17 +950,14 @@ and (max-width: 480px) {
 		border-radius: 5rem;
 	}
 
-	.border > svg {
-		height: 14.5rem;
-		width: 18.5rem;
-	}
-
-	.border > svg:first-of-type {
+	.border > svg.lg {
 		display: none;
 	}
 
-	.border > svg:last-of-type {
-		display: block;
+	.border > svg.sm {
+		display: initial;
+		height: 15.5rem;
+		width: 15.5rem;
 	}
 
 	.buzzer {
@@ -904,17 +969,6 @@ and (max-width: 480px) {
 	.game.tutorial > .buzzer::after {
 		height: 12rem;
 		width: 12rem;
-	}
-
-	@keyframes wave {
-		from {
-			height: 40rem;
-			width: 40rem;
-		} to {
-			height: 110rem;
-			width: 110rem;
-			opacity: 0;
-		}
 	}
 
 	.sweep {
@@ -935,13 +989,21 @@ and (max-width: 480px) {
 		border-width: 1.2rem;
 	}
 
-	.up,
-	.dn {
-		height: calc(50% - 24.4rem);
+	.team {
+		height: calc(50% - 22.4rem);
+	}
+
+	.game.tutorial > .team::before {
+		top: -10rem;
 	}
 
 	.expression {
 		margin: 2rem 0;
+	}
+
+	.game > progress {
+		bottom: 9rem;
+		right: 2rem;
 	}
 
 	.home > .fullscreen-btn,
@@ -952,10 +1014,18 @@ and (max-width: 480px) {
 		width: 6rem;
 	}
 
-	.game > .start-btn {
-		font-size: 3.2rem;
-		height: 6rem;
-		width: 10rem;
+	.game > .prev-btn,
+	.game > .next-btn {
+		bottom: 5rem;
+	}
+
+	.game > .prev-btn {
+		left: auto;
+		right: 10rem;
+	}
+
+	.game > .next-btn {
+		right: 2rem;
 	}
 
 	.menu-btn > svg {

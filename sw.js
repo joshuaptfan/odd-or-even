@@ -3,7 +3,7 @@ const precacheURLs = [
 	'/index.html',
 	'/index.css',
 	'/index.js',
-	'/countdowns.js',
+	'/data.js',
 	'/favicon.ico',
 	'/images/icon-192.png',
 	'/images/icon-512.png',

@@ -1,8 +1,8 @@
 var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 10);
 var stats = [];
 var currPlayer = 0;
+var tutorialStep = null;
 var buzzerLock = false;
-var isTutorial = true;
 var canWarnTouch = true;
 var interval;
 
@@ -10,6 +10,8 @@ document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
 	const game = document.querySelector('.game');
 	document.querySelector('.setup-num.points').textContent = ptDelta;
+	document.querySelector('.incr.points[value="-1"]').disabled = ptDelta === 5 ? true : false;
+	document.querySelector('.incr.points[value="1"]').disabled = !ptDelta ? true : false;
 	if (parseInt(localStorage.colorBlind))
 		game.classList.add('color-blind');
 
@@ -23,16 +25,20 @@ document.onreadystatechange = function () {
 	}, { passive: true });
 	home.addEventListener('mousemove', warnTouch);
 	document.querySelector('.buzzer').addEventListener('touchstart', e => {
-		buzz(e, true);
+		buzz(e);
 	});
-	document.querySelector('.buzzer').addEventListener('mousedown', e => {
-		buzz(e, false);
+	document.querySelector('.buzzer').addEventListener('click', e => {
+		buzz(e);
 	});
 	document.addEventListener('click', e => {
 		if (!/BUTTON|LABEL/.test(e.target.tagName)) return;
 		switch (e.target.classList.item(0)) {
 			case 'play-btn':
 				changePage('.home', '.setup', 'left');
+				break;
+			case 'tutorial-btn':
+				changePage('.home', '.game', 'left');
+				initTutorial();
 				break;
 			case 'about-btn':
 				changePage('.home', '.about', 'left');
@@ -42,18 +48,21 @@ document.onreadystatechange = function () {
 				break;
 			case 'incr':
 				const pd = [5, 10, 20, 30, 40, 50, null];
-				ptDelta = pd[(i => i < 0 ? 0 : i > 6 ? 6 : i)(pd.indexOf(ptDelta) + parseInt(e.target.value))];
+				ptDelta = pd[pd.indexOf(ptDelta) + parseInt(e.target.value)];
+				document.querySelector('.incr.points[value="-1"]').disabled = ptDelta === 5 ? true : false;
+				document.querySelector('.incr.points[value="1"]').disabled = !ptDelta ? true : false;
 				document.querySelector('.setup-num.points').textContent = ptDelta;
 				localStorage.ptDelta = ptDelta || '\u221E';
 				break;
-			case 'ready-btn':
-				changePage('.setup', '.game', 'left');
-				initTutorial();
-				break;
 			case 'start-btn':
-				isTutorial = false;
-				game.classList.remove('tutorial', 'mark-up', 'mark-dn');
+				changePage('.setup', '.game', 'left');
 				initGame();
+				break;
+			case 'prev-btn':
+				setTutorialStep(-1);
+				break;
+			case 'next-btn':
+				setTutorialStep(1);
 				break;
 			case 'menu-btn':
 				e.target.classList.toggle('opened');
@@ -82,8 +91,9 @@ document.onreadystatechange = function () {
 						changePage('.about', '.home', 'right');
 						break;
 					case 'game':
-						game.classList.remove('mark-up', 'mark-dn');
-						changePage('.game', '.setup', 'right');
+						tutorialStep = null;
+						game.classList.remove('tutorial', 'mark-up', 'mark-dn');
+						changePage('.game', '.home', 'right');
 				}
 		}
 	});
@@ -135,10 +145,9 @@ document.onreadystatechange = function () {
 			home.classList.remove('warn-portrait');
 	}
 
-	function buzz(e, touch) {
+	function buzz(e) {
 		if (!e.target.value && !buzzerLock) return;
-		if (touch)
-			e.preventDefault();
+		e.preventDefault();
 		e.stopPropagation();
 		if (buzzerLock) return;
 		score(e, parseInt(e.target.value));
@@ -151,11 +160,23 @@ document.onreadystatechange = function () {
 };
 
 function initTutorial() {
-	isTutorial = true;
+	tutorialStep = 1;
 	document.querySelector('.game').classList.add('tutorial');
 	document.querySelector('.buzzer').className = 'buzzer';
+	setTutorialStep(0);
 	initPlayers();
 	genExpression();
+}
+
+function setTutorialStep(n) {
+	tutorialStep += n;
+	document.querySelector('.game').dataset.step = tutorials[tutorialStep - 1].s;
+	document.querySelector('.game > progress').value = tutorialStep / tutorials.length;
+	document.querySelector('.prev-btn').disabled = tutorialStep === 1 ? true : false;
+	document.querySelector('.next-btn').disabled = tutorialStep === tutorials.length ? true : false;
+	document.querySelectorAll('.team').forEach(el => {
+		el.dataset.text = tutorials[tutorialStep - 1].t;
+	});
 }
 
 function initPlayers() {
@@ -172,6 +193,8 @@ function initPlayers() {
 		{ p: 0, pt: 0, t: 0, d: rand ? 'up' : 'dn' },
 		{ p: 1, pt: 0, t: 0, d: rand ? 'dn' : 'up' }
 	];
+
+	document.querySelector('.lead').style.top = '50%';
 }
 
 function initGame() {
@@ -210,7 +233,8 @@ function score(e, val) {
 
 	buzzerLock = true;
 	const buzzer = document.querySelector('.buzzer');
-	if (isTutorial)
+	document.querySelector('.lead').style.top = ((stats[0].pt - stats[1].pt) / (ptDelta || 100)) * (stats[0].d === 'up' ? -50 : 50) + 50 + '%';
+	if (tutorialStep)
 		document.querySelector('.game').classList.remove('mark-up', 'mark-dn');
 	else if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
 		setExpression((stats[0].pt > stats[1].pt ? 'EVEN' : 'ODD') + ' WINS');
@@ -243,7 +267,7 @@ function genExpression() {
 			break;
 		}
 	}
-	if (isTutorial)
+	if (tutorialStep)
 		document.querySelector('.game').classList.add('mark-' + (stats[currPlayer].d));
 
 	let ex = '';
@@ -265,7 +289,7 @@ function genExpression() {
 		}
 		ex += (n => !n ? '' : (n < 0 ? '\u2212' : '+') + Math.abs(n))((currPlayer - sum % 2) + (Math.random() * 17 & 0xFE) - 8);
 	}
-	setExpression(!isTutorial ? ex : ex.replace(/[13579](?=\D|$)/gu, '<u>$&</u>'));
+	setExpression(ex);
 }
 
 function setExpression(ex) {
