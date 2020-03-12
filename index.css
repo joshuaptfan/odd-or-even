@@ -25,8 +25,7 @@ noscript {
 	background-color: #F70;
 }
 
-.warn-ES6,
-input[type=checkbox] {
+.warn-ES6 {
 	display: none;
 }
 
@@ -82,8 +81,9 @@ h1 {
 }
 
 h2 {
-	margin: 2rem;
+	margin: 2rem 0;
 	font-size: 5rem;
+	color: #AAA;
 }
 
 h4 {
@@ -99,7 +99,8 @@ a {
 	color: #49F;
 }
 
-button {
+button,
+.button {
 	display: inline-block;
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
@@ -113,7 +114,8 @@ button {
 	cursor: pointer;
 }
 
-button:active {
+button:active,
+.button:active {
 	color: #000;
 	background-color: #FFF;
 }
@@ -128,6 +130,8 @@ button:disabled > svg {
 }
 
 .home > button,
+.about > button,
+.about > .button,
 .start-btn,
 .game > .settings > button {
 	display: block;
@@ -216,13 +220,17 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	stroke: #000;
 }
 
-.incr {
+h2:not(:first-of-type) {
+	margin-top: 5rem;
+}
+
+.incr-points {
 	margin: 0 2rem;
 	height: 7rem;
 	width: 7rem;
 }
 
-.setup-num {
+.num-points {
 	display: inline-block;
 	position: relative;
 	height: 7rem;
@@ -232,13 +240,63 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	vertical-align: middle;
 }
 
-.setup-num:empty::before {
+.num-points:empty::before {
 	position: absolute;
 	left: 0;
 	height: 100%;
 	width: 100%;
 	background: no-repeat center/100% url(images/infinity.svg);
 	content: '';
+}
+
+.setup > div {
+	margin: 0 auto;
+	width: max-content;
+	text-align: left;
+}
+
+.setup > div > label {
+	display: block;
+	position: relative;
+	margin: 1rem 0;
+	padding-left: 7.5rem;
+	font-size: 5rem;
+	cursor: pointer;
+}
+
+label > input {
+	position: absolute;
+	-webkit-appearance: none;
+			appearance: none;
+	left: 1rem;
+	height: 5rem;
+	width: 5rem;
+	border: .2rem solid #FFF;
+	border-radius: 50%;
+}
+
+label:active > input {
+	background-color: #FFF;
+}
+
+label > input:checked::before {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 2.5rem;
+	width: 2.5rem;
+	transform: translate(-50%, -50%);
+	background-color: #FFF;
+	border-radius: 50%;
+	content: '';
+}
+
+.about > button,
+.about > .button {
+	margin: 1rem auto;
+	width: max-content;
+	font-size: 4rem;
+	text-decoration: none;
 }
 
 .game {
@@ -549,7 +607,6 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 }
 
 .buzzer > .restart-btn > svg {
-	stroke-linejoin: miter;
 	stroke-linecap: butt;
 	animation: spin 12s linear infinite;
 }
@@ -698,7 +755,7 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	margin-top: -1.5rem;
 	left: 0;
 	border: 1.5rem solid transparent;
-	border-left: 1.5rem solid #AAA;
+	border-left: 1.5rem solid #FFF;
 	transition: top .1s;
 }
 
@@ -707,7 +764,7 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	top: -1.5rem;
 	left: calc(100vw - 4.5rem);
 	border: 1.5rem solid transparent;
-	border-right: 1.5rem solid #AAA;
+	border-right: 1.5rem solid #FFF;
 	content: '';
 }
 
@@ -809,6 +866,10 @@ button:active > svg {
 .game > .restart-btn {
 	opacity: 0;
 	transition: left .2s, opacity .2s;
+}
+
+.restart-btn > svg {
+	stroke-linejoin: miter;
 }
 
 .menu-btn.opened ~ .restart-btn {

@@ -1,4 +1,5 @@
 var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 10);
+var difficulty = parseInt(localStorage.difficulty || 1);
 var stats = [];
 var currPlayer = 0;
 var tutorialStep = null;
@@ -9,9 +10,10 @@ var interval;
 document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
 	const game = document.querySelector('.game');
-	document.querySelector('.setup-num.points').textContent = ptDelta;
-	document.querySelector('.incr.points[value="-1"]').disabled = ptDelta === 5 ? true : false;
-	document.querySelector('.incr.points[value="1"]').disabled = !ptDelta ? true : false;
+	document.querySelector('.num-points').textContent = ptDelta;
+	document.querySelector('.incr-points[value="-1"]').disabled = ptDelta === 5 ? true : false;
+	document.querySelector('.incr-points[value="1"]').disabled = !ptDelta ? true : false;
+	document.querySelector('[name="difficulty"][value="' + difficulty + '"]').checked = true;
 	if (parseInt(localStorage.colorBlind))
 		game.classList.add('color-blind');
 
@@ -46,17 +48,28 @@ document.onreadystatechange = function () {
 			case 'fullscreen-btn':
 				toggleFullscreen();
 				break;
-			case 'incr':
+			case 'incr-points':
 				const pd = [5, 10, 20, 30, 40, 50, null];
 				ptDelta = pd[pd.indexOf(ptDelta) + parseInt(e.target.value)];
-				document.querySelector('.incr.points[value="-1"]').disabled = ptDelta === 5 ? true : false;
-				document.querySelector('.incr.points[value="1"]').disabled = !ptDelta ? true : false;
-				document.querySelector('.setup-num.points').textContent = ptDelta;
+				document.querySelector('.num-points').textContent = ptDelta;
+				document.querySelector('.incr-points[value="-1"]').disabled = ptDelta === 5 ? true : false;
+				document.querySelector('.incr-points[value="1"]').disabled = !ptDelta ? true : false;
 				localStorage.ptDelta = ptDelta || '\u221E';
+				break;
+			case 'difficulty':
+				difficulty = parseInt(e.target.children[0].value);
+				localStorage.difficulty = difficulty;
 				break;
 			case 'start-btn':
 				changePage('.setup', '.game', 'left');
 				initGame();
+				break;
+			case 'share-btn':
+				navigator.share({
+					title: 'Odd or Even',
+					text: 'Multiplayer math game',
+					url: 'https://oddoreven.app/'
+				});
 				break;
 			case 'prev-btn':
 				setTutorialStep(-1);
@@ -104,17 +117,20 @@ document.onreadystatechange = function () {
 			e.target.classList.remove('fly-in-left', 'fly-in-right');
 	});
 
-	if (!window.matchMedia('(display-mode: fullscreen)').matches && !navigator.standalone) {
+	fullscreen: if (!window.matchMedia('(display-mode: fullscreen)').matches && !navigator.standalone) {
 		resize();
 		window.addEventListener('resize', resize);
-		if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) return;
+		if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) break fullscreen;
 		home.querySelector('.fullscreen-btn').style.display = 'block';
 		game.querySelector('.fullscreen-btn').style.display = 'block';
 		game.querySelector('.color-blind-btn').style.marginTop = '119rem';
 	}
 
+	if (!navigator.share)
+		document.querySelector('.share-btn').style.display = 'none';
+
 	// Service worker caches page for offline use
-	if ('serviceWorker' in navigator)
+	if (navigator.serviceWorker)
 		navigator.serviceWorker.register('/sw.js');
 
 	function changePage(deactivated, activated, direction) {
@@ -270,26 +286,57 @@ function genExpression() {
 	if (tutorialStep)
 		document.querySelector('.game').classList.add('mark-' + (stats[currPlayer].d));
 
-	let ex = '';
-	rand = Math.random();
-	if (rand < .3) {
-		// Generate number
-		const numSize = [.033, .075, .122, .17, .215, .252, .276, .29, .3];
-		let i = -1;
-		while (rand > numSize[++i]);
-		ex += (Math.random() * 10 ** i & 0x7FFFFFFE) + currPlayer;
-	} else {
-		// Generate additive expression
-		let numNums = Math.ceil(Math.random() * 4);
-		let sum = 0;
-		while (numNums--) {
-			let num = Math.trunc(Math.random() * 19) - 9;
-			sum += num;
-			ex += (num < 0 ? '\u2212' : ex ? '+' : '') + Math.abs(num);
-		}
-		ex += (n => !n ? '' : (n < 0 ? '\u2212' : '+') + Math.abs(n))((currPlayer - sum % 2) + (Math.random() * 17 & 0xFE) - 8);
+	// Generate expression
+	const diff = difficulties[tutorialStep ? 0 : difficulty];
+	let ex = [];
+	const maxLen = Math.trunc(Math.random() * (diff.len - 1)) + 2;
+	let remLen = maxLen;
+	while (true) {
+		// Generate operator and number
+		const len = Math.trunc(Math.random() ** 3 * (maxLen - 1)) + 2;
+		if (len > remLen) break;
+		const opr = (r =>
+			r < diff.oprs[0] ? (ex.length ? 1 : null)
+			: r < diff.oprs[1] ? 2
+			: (ex.length ? 3 : null)
+		)(Math.random());
+		const num = Math.trunc(Math.random() * 10 ** (len - 1));
+		ex.push({ opr, num, par: num & 1 });
+		remLen -= len;
 	}
-	setExpression(ex);
+
+	// Calculate parity
+	let exP = ex.map(o => Object.assign({}, o));
+	// Reduce multiplications
+	for (let i = 0; i < exP.length - 1; i++) {
+		if (exP[i + 1].opr !== 3) continue;
+		exP[i].par = exP[i].par && exP[i + 1].par ? 1 : 0;
+		exP[i].len = (exP[i].len || 1) + 1;
+		exP.splice(i-- + 1, 1);
+	}
+	// Reduce additions
+	// If parity does not match current player, flip parity
+	flip: if (exP.reduce((p, v) => p + v.par & 1, 0) !== currPlayer) {
+		// Flip additive component if exists
+		for (let i = 0; i < ex.length; i++) {
+			if (ex[i].opr === 3 || ex[i + 1] && ex[i + 1].opr === 3) continue;
+			flipParity(i);
+			break flip;
+		}
+		// Flip multiplication group
+		if (exP[0].par)
+			flipParity(Math.trunc(Math.random() * exP[0].len));
+		else
+			for (let i = 0; i < exP[0].len; i++)
+				ex[i].num += ex[i].par ? 0 : 1;
+
+		function flipParity(i) {
+			ex[i].num += ex[i].par ? -1 : 1;
+		}
+	}
+
+	const operators = ['+', '\u2212', '\xD7'];
+	setExpression(ex.reduce((s, v) => s + (v.opr ? operators[v.opr - 1] : '') + v.num, ''));
 }
 
 function setExpression(ex) {

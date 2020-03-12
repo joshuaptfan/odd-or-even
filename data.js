@@ -1,3 +1,9 @@
+const difficulties = [
+	{ len: 6, oprs: [.5, 1] },
+	{ len: 10, oprs: [.5, 1] },
+	{ len: 10, oprs: [.3, .6] }
+];
+
 const countdowns = [
 	['ODD', 'OR', 'EVEN'],
 	['EVEN', 'OR', 'ODD'],
