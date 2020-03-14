@@ -351,8 +351,7 @@ function genExpression() {
 		}
 	}
 
-	const operators = ['+', '\u2212', '\xD7'];
-	setExpression(ex.reduce((s, v) => s + (v.opr ? operators[v.opr - 1] : '') + v.num, ''));
+	setExpression(ex.reduce((s, v) => s + (v.opr ? ['+', '\u2212', '\xD7'][v.opr - 1] : '') + v.num, ''));
 }
 
 function setExpression(ex) {
