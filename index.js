@@ -6,6 +6,7 @@ var tutorialStep = null;
 var buzzerLock = false;
 var canWarnTouch = true;
 var interval;
+var installPrompt;
 
 document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
@@ -36,7 +37,9 @@ document.onreadystatechange = function () {
 		if (!/BUTTON|LABEL/.test(e.target.tagName)) return;
 		switch (e.target.classList.item(0)) {
 			case 'play-btn':
-				changePage('.home', '.setup', 'left');
+				tutorialStep = null;
+				game.classList.remove('tutorial', 'mark-up', 'mark-dn');
+				changePage(home.classList.contains('activated') ? '.home' : '.game', '.setup', 'left');
 				break;
 			case 'tutorial-btn':
 				changePage('.home', '.game', 'left');
@@ -47,6 +50,9 @@ document.onreadystatechange = function () {
 				break;
 			case 'fullscreen-btn':
 				toggleFullscreen();
+				break;
+			case 'install-btn':
+				installPrompt.prompt();
 				break;
 			case 'incr-points':
 				const pd = [5, 10, 20, 30, 40, 50, null];
@@ -69,7 +75,7 @@ document.onreadystatechange = function () {
 					title: 'Odd or Even',
 					text: 'Multiplayer math game',
 					url: 'https://oddoreven.app/'
-				});
+				}).catch();
 				break;
 			case 'prev-btn':
 				setTutorialStep(-1);
@@ -118,8 +124,18 @@ document.onreadystatechange = function () {
 	});
 
 	fullscreen: if (!window.matchMedia('(display-mode: fullscreen)').matches && !navigator.standalone) {
+		const about = document.querySelector('.about');
 		resize();
 		window.addEventListener('resize', resize);
+		window.addEventListener('beforeinstallprompt', e => {
+			e.preventDefault();
+			installPrompt = e;
+			about.classList.add('auto');
+		});
+		window.addEventListener('appinstalled', () => {
+			about.classList.remove('install');
+		});
+		about.classList.add('install', /^iP(hone|[ao]d)/.test(navigator.platform) ? 'ios' : 'android');
 		if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) break fullscreen;
 		home.querySelector('.fullscreen-btn').style.display = 'block';
 		game.querySelector('.fullscreen-btn').style.display = 'block';

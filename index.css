@@ -1,5 +1,4 @@
 :root {
-	margin: 0;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1vh;
 	font-weight: 700;
@@ -12,6 +11,10 @@
 			user-select: none;
 }
 
+body {
+	margin: 0;
+}
+
 *:focus {
 	outline: none;
 }
@@ -19,9 +22,9 @@
 .warn-ES6,
 noscript {
 	display: block;
-	line-height: 6rem;
+	line-height: 5rem;
 	width: 100%;
-	font-size: 4rem;
+	font-size: 3rem;
 	background-color: #F70;
 }
 
@@ -99,8 +102,7 @@ a {
 	color: #49F;
 }
 
-button,
-.button {
+button {
 	display: inline-block;
 	padding: 0;
 	font-family: Arial, Helvetica, sans-serif;
@@ -114,8 +116,7 @@ button,
 	cursor: pointer;
 }
 
-button:active,
-.button:active {
+button:active {
 	color: #000;
 	background-color: #FFF;
 }
@@ -131,12 +132,12 @@ button:disabled > svg {
 
 .home > button,
 .about > button,
-.about > .button,
 .start-btn,
-.game > .settings > button {
+.game > .settings > button:not(.close-btn) {
 	display: block;
 	margin: 5rem auto;
-	padding: 1.5rem;
+	padding: 1.5rem 0;
+	width: 22rem;
 }
 
 .home > button:first-of-type,
@@ -291,12 +292,64 @@ label > input:checked::before {
 	content: '';
 }
 
-.about > button,
-.about > .button {
-	margin: 1rem auto;
-	width: max-content;
-	font-size: 4rem;
-	text-decoration: none;
+.about > p > img {
+	height: 16rem;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
+}
+
+.about > button {
+	margin-top: -1rem;
+	padding: .5rem;
+	font-size: 3rem;
+}
+
+.about > .install-text,
+.about > .install-text > .manual > *,
+.about > .install-btn {
+	display: none;
+}
+
+.about.install > .install-text {
+	display: block;
+}
+
+.about.auto > .install-text > .manual {
+	display: none;
+}
+
+.about.install.auto > .install-btn {
+	display: block;
+}
+
+.about.android > .install-text > .manual > .android {
+	display: inline;
+}
+
+.about.ios > .install-text > .manual > .ios {
+	display: inline-block;
+	margin: -.2rem;
+	height: 3.3rem;
+	stroke: #49F;
+}
+
+.about > .paypal {
+	display: inline-block;
+	margin-top: -1rem;
+	padding: .8rem 0;
+	width: 22rem;
+	background-color: #FFC439;
+	border-radius: 5rem;
+}
+
+.about > .paypal:active {
+	background-color: #F2BA36;
+}
+
+.about > .paypal > img {
+	position: relative;
+	top: .4rem;
+	height: 3rem;
 }
 
 .game {
@@ -667,6 +720,10 @@ label > input:checked::before {
 	white-space: nowrap;
 }
 
+.game.tutorial[data-step='00'] > .team > .expression {
+	filter: blur(2rem);
+}
+
 .player {
 	margin: 0 auto;
 	padding: 0 .5rem;
@@ -705,11 +762,6 @@ label > input:checked::before {
 	color: #FFF;
 	transition: filter .2s;
 }
-
-.game.tutorial[data-step='00'] > .team > .player, 
-.game.tutorial[data-step='00'] > .team > .point {
-	filter: blur(2rem);
-} 
 
 .point.flash::before {
 	position: absolute;
@@ -845,7 +897,21 @@ button:active > svg {
 	right: 6rem;
 }
 
-.game.tutorial > progress,
+.game > .play-btn {
+	display: none;
+}
+
+.game.tutorial[data-step='11'] > .play-btn {
+	display: block;
+	position: absolute;
+	bottom: 2rem;
+	left: auto;
+	right: 2rem;
+	width: 18rem;
+	font-size: 2.8rem;
+}
+
+.game.tutorial[data-step*='0'] > progress,
 .game.tutorial > .prev-btn,
 .game.tutorial > .next-btn {
 	display: initial;
@@ -923,8 +989,9 @@ button:active > svg {
 	pointer-events: auto;
 }
 
-.game > .settings > button {
+.game > .settings > button:not(.close-btn) {
 	margin: 2rem auto;
+	width: 32rem;
 }
 
 .game > .settings > .color-blind-btn {
@@ -1087,6 +1154,12 @@ and (max-width: 480px) {
 
 	.game > .next-btn {
 		right: 2rem;
+	}
+
+	.game.tutorial[data-step='11'] > .play-btn {
+		width: 14rem;
+		bottom: 9rem;
+		font-size: 3.4rem;
 	}
 
 	.menu-btn > svg {

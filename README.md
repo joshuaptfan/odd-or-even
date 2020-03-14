@@ -4,11 +4,11 @@ Local multiplayer math game, played on a single touchscreen. Competitive, reflex
 
 Web app: __https://oddoreven.app/__
 
-[Progressive Web App](https://developers.google.com/web/progressive-web-apps) &mdash; can be added to your Android/iOS homescreen and run as a fullscreen app, for the optimal game experience.
+[Progressive Web App](https://developers.google.com/web/progressive-web-apps) &mdash; can be installed on Android/iOS for the best fullscreen experience.
 
 This game is free. If you enjoy it, consider making a small donation according to what you feel the game is worth.
 
-[PayPal](https://paypal.me/joshuaptfan)
+[![PayPal](images/paypal.svg)](https://paypal.me/joshuaptfan)
 
 <details>
 <summary>Table of Contents</summary>

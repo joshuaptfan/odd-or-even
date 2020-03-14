@@ -10,6 +10,8 @@ const precacheURLs = [
 	'/images/icon.svg',
 	'/images/infinity.svg',
 	'/images/hand.svg',
+	'/images/qrcode.gif',
+	'/images/paypal.svg',
 ];
 
 // Service worker installation

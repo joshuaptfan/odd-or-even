@@ -17,14 +17,9 @@ const countdowns = [
 ];
 
 const tutorials = [
-	{ s: '00', t: 'The result is either\nodd or even.' },
-	{ s: '01', t: 'There are 2 teams,\nOdd and Even.' },
+	{ s: '00', t: 'There are 2 teams,\nOdd and Even.' },
+	{ s: '01', t: 'The result is either\nodd or even.' },
 	{ s: '10', t: 'If the result matches your team,\npress the \u25EF button.' },
 	{ s: '10', t: "If it doesn't match your team,\npress the \u2A09 button." },
-	{ s: '10', t: 'Win by gaining the specified\npoint lead on your opponent.' },
-	{ s: '10', t: 'Math tip: You do not need to\ncalculate the actual result.' },
-	{ s: '10', t: 'odd \xB1 even = odd' },
-	{ s: '10', t: 'odd \xB1 odd = even' },
-	{ s: '10', t: 'So, just count the\nnumber of odd numbers.' },
-	{ s: '10', t: 'If there are an odd number of\nodd numbers, the result is odd!' }
+	{ s: '11', t: 'Win by gaining the specified\npoint lead on your opponent.' }
 ];
