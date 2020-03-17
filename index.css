@@ -577,7 +577,7 @@ label > input:checked::before {
 	left: 0;
 	height: 100%;
 	width: 100%;
-	font-size: 8rem;
+	font-size: 9rem;
 	color: #000;
 	background-color: #B00;
 	border: none;
@@ -617,7 +617,7 @@ label > input:checked::before {
 	height: 43%;
 	width: 43%;
 	background-color: #0B0;
-	border: 1rem solid #000;
+	border: .8rem solid #000;
 }
 
 .game.color-blind > .buzzer > .yes {
@@ -1111,10 +1111,14 @@ and (max-width: 480px) {
 	}
 
 	.buzzer > button {
-		font-size: 9.7rem;
+		font-size: 10.8rem;
 	}
 
-	.buzzer > button:last-of-type {
+	.buzzer > .yes {
+		border-width: 1rem;
+	}
+
+	.buzzer > .restart-btn {
 		border-width: 1.2rem;
 	}
 

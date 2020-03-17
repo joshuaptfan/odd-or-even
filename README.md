@@ -58,8 +58,8 @@ Hard difficulty adds multiplication to the mix, forcing players to pay attention
 
 ### Ideas for Play
 
-* 2v2 (large screen recommended)
-* Drinking game (winner takes a drink)
+* 2v2 &mdash; large touchscreen recommended
+* Drinking game &mdash; winner takes a drink
 
 ## Game Design
 

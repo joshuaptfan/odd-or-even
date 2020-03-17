@@ -135,7 +135,7 @@ document.onreadystatechange = function () {
 		window.addEventListener('appinstalled', () => {
 			about.classList.remove('install');
 		});
-		about.classList.add('install', /^iP(hone|[ao]d)/.test(navigator.platform) ? 'ios' : 'android');
+		about.classList.add('install', /^iP(hone|[ao]d)/.test(navigator.platform) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ? 'ios' : 'android');
 		if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) break fullscreen;
 		home.querySelector('.fullscreen-btn').style.display = 'block';
 		game.querySelector('.fullscreen-btn').style.display = 'block';
