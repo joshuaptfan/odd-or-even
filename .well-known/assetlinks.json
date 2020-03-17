@@ -1,0 +1,4 @@
+[{
+	"relation": ["delegate_permission/common.handle_all_urls"],
+	"target": { "namespace": "android_app", "package_name": "app.oddoreven", "sha256_cert_fingerprints": ["82:B1:A4:54:EE:07:3A:7E:12:0A:37:31:07:EF:BD:D7:B8:5F:C0:F0:78:CE:8A:56:E1:3C:78:00:C3:08:AB:DA"] }
+}]
