@@ -1,6 +1,6 @@
 # Odd or Even
 
-Local multiplayer math game, played on a single touchscreen. Competitive, reflex-based gameplay.
+A game of simple speed math and reflexes, played between 2 teams on a single touchscreen.
 
 Web app: __https://oddoreven.app/__
 
@@ -28,11 +28,11 @@ This game is free. If you enjoy it, consider making a small donation according t
 
 _Take the in-game tutorial for a shorter description of gameplay._
 
-This is a game of simple speed math and reflexes, between 2 teams.
+There are 2 teams, __Odd__ and __Even__. The math expression's result has a _parity_ of either __odd__ or __even__.
 
-A math expression is shown. Its result's parity is either __odd__ or __even__. There are 2 buttons in the center, &#9711; and &#10005;. Each team asks themselves if the parity matches their team, and races to press &#9711; ("yes") or &#10005; ("no") before the other team. If they answer correctly, they will add a point to their team or subtract a point from the other team. Otherwise, they will do the opposite and benefit their opponent.
+There are 2 buttons in the center, &#9711; and &#10005;. Each team asks themselves if the parity matches their team, and races to press &#9711; ("yes") or &#10005; ("no") before the other team. If they answer correctly, they will add a point to their team or subtract a point from the other team. Otherwise, they will do the opposite and benefit their opponent.
 
-The math expression then changes, and the race begins anew. The game ends when one team gains a predetermined point lead over the other.
+After each answer, the math expression changes. The game ends when one team gains a predetermined point lead over the other.
 
 How the buttons work is that each turn, they both affect the score of the team whose parity matches the expression result, adding or subtracting 1 from that team's score.
 
