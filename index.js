@@ -312,9 +312,9 @@ function genExpression() {
 		const len = Math.trunc(Math.random() ** 3 * (maxLen - 1)) + 2;
 		if (len > remLen) break;
 		const opr = (r =>
-			r < diff.oprs[0] ? (ex.length ? 1 : null)
+			r < diff.oprs[0] ? (ex.length ? 1 : 0)
 			: r < diff.oprs[1] ? 2
-			: (ex.length ? 3 : null)
+			: (ex.length ? 3 : 0)
 		)(Math.random());
 		const num = Math.trunc(Math.random() * 10 ** (len - 1));
 		ex.push({ opr, num, par: num & 1 });
@@ -351,7 +351,7 @@ function genExpression() {
 		}
 	}
 
-	setExpression(ex.reduce((s, v) => s + (v.opr ? ['+', '\u2212', '\xD7'][v.opr - 1] : '') + v.num, ''));
+	setExpression(ex.reduce((s, v) => s + ['', '+', '\u2212', '\xD7'][v.opr] + v.num, ''));
 }
 
 function setExpression(ex) {
