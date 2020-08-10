@@ -8,7 +8,7 @@
 	-webkit-tap-highlight-color: transparent;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
-			user-select: none;
+	        user-select: none;
 }
 
 body {
@@ -221,6 +221,10 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 	stroke: #000;
 }
 
+.blur {
+	filter: blur(.5rem);
+}
+
 h2:not(:first-of-type) {
 	margin-top: 5rem;
 }
@@ -250,13 +254,13 @@ h2:not(:first-of-type) {
 	content: '';
 }
 
-.setup > div {
+.setup > .list {
 	margin: 0 auto;
 	width: max-content;
 	text-align: left;
 }
 
-.setup > div > label {
+label {
 	display: block;
 	position: relative;
 	margin: 1rem 0;
@@ -268,7 +272,7 @@ h2:not(:first-of-type) {
 label > input {
 	position: absolute;
 	-webkit-appearance: none;
-			appearance: none;
+	        appearance: none;
 	left: 1rem;
 	height: 5rem;
 	width: 5rem;
@@ -291,6 +295,13 @@ label > input:checked::before {
 	background-color: #FFF;
 	border-radius: 50%;
 	content: '';
+}
+
+.handicap-btn {
+	position: relative;
+	padding: 1rem 0;
+	width: 19rem;
+	border-radius: 1rem;
 }
 
 .about > p > img {
@@ -1066,6 +1077,107 @@ html:-webkit-full-screen .settings > .fullscreen-btn {
 		left: 1rem;
 		opacity: 0;
 	}
+}
+
+.select-bg {
+	display: none;
+	position: fixed;
+	z-index: 2;
+	margin-top: -50rem;
+	top: 50%;
+	left: 0;
+	height: 100rem;
+	width: 100%;
+	background-color: rgba(0, 0, 0, .7);
+}
+
+.select {
+	position: absolute;
+	padding: .5rem 0;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: left;
+	border: .2rem solid #FFF;
+	border-radius: 1rem;
+}
+
+.select > button {
+	display: block;
+	position: relative;
+	padding: .5rem 0;
+	width: 19rem;
+	border: none;
+	border-radius: 0;
+}
+
+.select > button:not(:last-of-type) {
+	box-shadow: 0 1.1rem 0 -1rem #444;
+}
+
+button.uparr,
+button.dnarr {
+	padding-right: 4rem;
+}
+
+button.uparr::before,
+button.dnarr::before {
+	position: absolute;
+	margin-top: -1.5rem;
+	top: 50%;
+	right: 3.2rem;
+	height: 3.5rem;
+	width: .6rem;
+	background-color: #FFF;
+	content: '';
+}
+
+button.dnarr::before {
+	margin-top: -2rem;
+}
+
+button.uparr:active::before,
+button.dnarr:active::before,
+button.uparr.selected::before,
+button.dnarr.selected::before {
+	background-color: #000;
+}
+
+button.uparr::after,
+button.dnarr::after {
+	position: absolute;
+	right: 2.2rem;
+	height: 0;
+	width: 0;
+	border: 1.3rem solid transparent;
+	content: '';
+}
+
+button.uparr::after {
+	margin-top: -3.1rem;
+	top: 50%;
+	border-bottom: 1.3rem solid #FFF;
+}
+
+button.uparr:active::after,
+button.uparr.selected::after {
+	border-bottom: 1.3rem solid #000;
+}
+
+button.dnarr::after {
+	margin-bottom: -3.1rem;
+	bottom: 50%;
+	border-top: 1.3rem solid #FFF;
+}
+
+button.dnarr:active::after,
+button.dnarr.selected::after {
+	border-top: 1.3rem solid #000;
+}
+
+button.selected {
+	color: #000;
+	background-color: #FFF;
 }
 
 @media only screen

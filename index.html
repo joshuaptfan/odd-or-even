@@ -46,11 +46,13 @@
 		<span class='num-points'></span>
 		<button class='incr-points' value='1'>+</button>
 		<h2>Difficulty</h2>
-		<div>
+		<div class='list'>
 			<label class='difficulty'><input type='radio' name='difficulty' value='0'>Easy</label>
 			<label class='difficulty'><input type='radio' name='difficulty' value='1'>Normal</label>
 			<label class='difficulty'><input type='radio' name='difficulty' value='2'>Hard</label>
 		</div>
+		<h2>Handicap</h2>
+		<button class='handicap-btn'>None</button>
 		<button class='start-btn'>Start</button>
 	</div>
 	<div class='page about'>
@@ -158,6 +160,17 @@
 			<path d='M3,1 l-2,2 l2,2 M1,3 h4'/>
 		</svg>
 	</button>
+	<div class='select-bg handicap'><div class='select'>
+		<button class='handicap uparr' value='0.8'>80%</button>
+		<button class='handicap uparr' value='0.6'>60%</button>
+		<button class='handicap uparr' value='0.4'>40%</button>
+		<button class='handicap uparr' value='0.2'>20%</button>
+		<button class='handicap selected' value='0'>None</button>
+		<button class='handicap dnarr' value='-0.2'>20%</button>
+		<button class='handicap dnarr' value='-0.4'>40%</button>
+		<button class='handicap dnarr' value='-0.6'>60%</button>
+		<button class='handicap dnarr' value='-0.8'>80%</button>
+	</div></div>
 	<script>
 		try {
 			eval('"use strict"; let test = () => 0');

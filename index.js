@@ -1,5 +1,6 @@
 var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 10);
 var difficulty = parseInt(localStorage.difficulty || 1);
+var handicap = 0;
 var stats = [];
 var currPlayer = 0;
 var tutorialStep = null;
@@ -34,6 +35,11 @@ document.onreadystatechange = function () {
 		buzz(e);
 	});
 	document.addEventListener('click', e => {
+		if (e.target.classList.item(0) === 'select-bg') {
+			e.target.style.display = 'none';
+			document.querySelector('.setup').classList.remove('blur');
+			document.querySelector('.back-btn').classList.remove('blur');
+		}
 		if (!/BUTTON|LABEL/.test(e.target.tagName)) return;
 		switch (e.target.classList.item(0)) {
 			case 'play-btn':
@@ -65,6 +71,14 @@ document.onreadystatechange = function () {
 			case 'difficulty':
 				difficulty = parseInt(e.target.children[0].value);
 				localStorage.difficulty = difficulty;
+				break;
+			case 'handicap-btn':
+				document.querySelector('.setup').classList.add('blur');
+				document.querySelector('.back-btn').classList.add('blur');
+				document.querySelector('.select-bg.handicap').style.display = 'block';
+				break;
+			case 'handicap':
+				setHandicap(e.target);
 				break;
 			case 'start-btn':
 				changePage('.setup', '.game', 'left');
@@ -177,6 +191,19 @@ document.onreadystatechange = function () {
 			home.classList.remove('warn-portrait');
 	}
 
+	function setHandicap(el) {
+		const handicapBtn = document.querySelector('.handicap-btn');
+		handicapBtn.classList.remove('uparr', 'dnarr');
+		document.querySelector('.handicap[value="' + handicap + '"]').classList.remove('selected');
+		handicap = parseFloat(el.value);
+		handicapBtn.classList.add(el.classList.item(1));
+		handicapBtn.textContent = el.textContent;
+		el.classList.add('selected');
+		document.querySelector('.select-bg.handicap').style.display = 'none';
+		document.querySelector('.setup').classList.remove('blur');
+		document.querySelector('.back-btn').classList.remove('blur');
+	}
+
 	function buzz(e) {
 		if (!e.target.value && !buzzerLock) return;
 		e.preventDefault();
@@ -212,21 +239,22 @@ function setTutorialStep(n) {
 }
 
 function initPlayers() {
-	const rand = Math.trunc(Math.random() * 2);
-	document.querySelector('.up > .player').textContent = rand ? 'Even' : 'Odd';
+	const side = Math.trunc(Math.random() * 2);
+	const score = (s => handicap > 0 ? [s, 0] : [0, s])(Math.abs(handicap) * (ptDelta || 100));
+	document.querySelector('.up > .player').textContent = side ? 'Even' : 'Odd';
 	let point = document.querySelector('.up > .point');
-	point.id = 'pt' + (rand ? 0 : 1);
-	point.textContent = 0;
-	document.querySelector('.dn > .player').textContent = rand ? 'Odd' : 'Even';
+	point.id = 'pt' + (side ? 0 : 1);
+	point.textContent = score[0];
+	document.querySelector('.dn > .player').textContent = side ? 'Odd' : 'Even';
 	point = document.querySelector('.dn > .point');
-	point.id = 'pt' + (rand ? 1 : 0);
-	point.textContent = 0;
+	point.id = 'pt' + (side ? 1 : 0);
+	point.textContent = score[1];
 	stats = [
-		{ p: 0, pt: 0, t: 0, d: rand ? 'up' : 'dn' },
-		{ p: 1, pt: 0, t: 0, d: rand ? 'dn' : 'up' }
+		{ p: 0, pt: score[1 - side], t: 0, d: side ? 'up' : 'dn' },
+		{ p: 1, pt: score[side], t: 0, d: side ? 'dn' : 'up' }
 	];
 
-	document.querySelector('.lead').style.top = '50%';
+	document.querySelector('.lead').style.top = ((score[1] - score[0]) / (ptDelta || 100)) * 50 + 50 + '%';
 }
 
 function initGame() {
