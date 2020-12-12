@@ -13,7 +13,7 @@ This game is free. If you enjoy it, consider making a small donation according t
 <details>
 <summary>Table of Contents</summary>
 
-* [Gameplay](#gameplay)
+* [How to Play](#how-to-play)
   * [Math Tips](#math-tips)
   * [Ideas for Play](#ideas-for-play)
 * [Game Design](#game-design)
@@ -24,13 +24,13 @@ This game is free. If you enjoy it, consider making a small donation according t
   * [Pacing](#pacing)
 </details>
 
-## Gameplay
+## How to Play
 
 _Take the in-game tutorial for a shorter description of gameplay._
 
-There are 2 teams, __Odd__ and __Even__. The math expression's result has a _parity_ of either __odd__ or __even__.
+There are 2 teams, __Odd__ and __Even__. Each math expression's result has a _parity_ of either __odd__ or __even__.
 
-There are 2 buttons in the center, &#9711; and &#10005;. Each team asks themselves if the parity matches their team, and races to press &#9711; ("yes") or &#10005; ("no") before the other team. If they answer correctly, they will add a point to their team or subtract a point from the other team. Otherwise, they will do the opposite and benefit their opponent.
+There are 2 buttons in the center, &#9711; and &#10005;. If the result matches your team, press &#9711;. If it doesn't match your team, press &#10005;. Race against your opponent to press the correct button for your team.
 
 After each answer, the math expression changes. The game ends when one team gains a predetermined point lead over the other.
 

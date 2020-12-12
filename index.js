@@ -87,7 +87,7 @@ document.onreadystatechange = function () {
 			case 'share-btn':
 				navigator.share({
 					title: 'Odd or Even',
-					text: 'Multiplayer math game',
+					text: 'Speed math game',
 					url: 'https://oddoreven.app/'
 				}).catch();
 				break;
@@ -170,12 +170,10 @@ document.onreadystatechange = function () {
 
 	function toggleFullscreen() {
 		const docEl = document.documentElement;
-		const requestFullscreen = docEl.requestFullscreen || docEl.webkitRequestFullScreen;
-		const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen;
 		if (!document.fullscreenElement && !document.webkitFullscreenElement)
-			requestFullscreen.call(docEl);
+			(docEl.requestFullscreen || docEl.webkitRequestFullScreen).call(docEl);
 		else
-			exitFullscreen.call(document);
+			(document.exitFullscreen || document.webkitExitFullscreen).call(document);
 	}
 
 	function warnTouch() {
