@@ -29,11 +29,12 @@
 	<noscript>Please enable JavaScript to use this site.</noscript>
 	<div class='page home activated'>
 		<h1>Odd or Even</h1>
-		<h4>Multiplayer speed math game</h4>
-		<button class='play-btn'>Play</button>
+		<h4>Speed math game</h4>
+		<button class='solo-btn'>Solo</button>
+		<button class='versus-btn'>Versus</button>
 		<button class='tutorial-btn'>Tutorial</button>
 		<button class='about-btn'>About</button>
-		<div class='warn'>TOUCHSCREEN REQUIRED</div>
+		<div class='warn'>TOUCHSCREEN RECOMMENDED</div>
 		<button class='fullscreen-btn'>
 			<svg viewBox='0 0 6 6'>
 				<path d='M2,1 h-1 v1 m0,2 v1 h1 m2,0 h1 v-1 m0,-2 v-1 h-1'/>
@@ -45,15 +46,15 @@
 		<button class='incr-points' value='-1'>&minus;</button>
 		<span class='num-points'></span>
 		<button class='incr-points' value='1'>+</button>
-		<h2>Difficulty</h2>
-		<div class='list'>
+		<h2 class='solo'>Difficulty</h2>
+		<div class='list solo'>
 			<label class='difficulty'><input type='radio' name='difficulty' value='0'>Easy</label>
 			<label class='difficulty'><input type='radio' name='difficulty' value='1'>Normal</label>
 			<label class='difficulty'><input type='radio' name='difficulty' value='2'>Hard</label>
 		</div>
 		<h2>Handicap</h2>
 		<button class='handicap-btn'>None</button>
-		<button class='start-btn'>Start</button>
+		<button class='start-btn solo'>Start</button>
 	</div>
 	<div class='page about'>
 		<h2>About</h2>
@@ -81,12 +82,30 @@
 				<path d='M-1.5,0 h2 v1 a4,4 0 0 0 4,4 a6,6 0 0 1 6,6 a4,4 0 0 0 4,4 h1 v2 h-17 Z'/>
 			</svg>
 		</div>
-		<div class='team up'>
-			<p class='expression'></p>
-			<div class='player'></div>
+		<p class='expression solo'></p>
+		<div class='timer solo'></div>
+		<div class='lives solo'>
+			<img><img><img>
+		</div>
+		<div class='buzzer solo'>
+			<button class='odd' value='1'>Odd</button>
+			<button class='even' value='0'>Even</button>
+			<button class='restart-btn'>
+				<svg viewBox='0 0 8 8'>
+					<path d='M6.67,4 A2.67,2.67 0 1 1 5.89,2.11 m.1,-.1 v.2 h-.2 Z'/>
+				</svg>
+			</button>
+		</div>
+		<div class='score solo'>
+			<div class='name'>Score</div>
+			<div class='point'>0</div>
+		</div>
+		<div class='team up versus'>
+			<p class='expression versus'></p>
+			<div class='name'></div>
 			<div class='point'></div>
 		</div>
-		<div class='buzzer'>
+		<div class='buzzer versus'>
 			<div class='wave'></div>
 			<div class='sweep'></div>
 			<button class='no' value='-1'></button>
@@ -101,12 +120,12 @@
 				</svg>
 			</button>
 		</div>
-		<div class='team dn'>
-			<p class='expression'></p>
-			<div class='player'></div>
+		<div class='team dn versus'>
+			<p class='expression versus'></p>
+			<div class='name'></div>
 			<div class='point'></div>
 		</div>
-		<div class='lead'></div>
+		<div class='lead versus'></div>
 		<progress></progress>
 		<button class='prev-btn' disabled>
 			<svg viewBox='0 0 6 6'>
@@ -118,7 +137,7 @@
 				<path d='M2.4,1 l2,2 l-2,2'/>
 			</svg>
 		</button>
-		<button class='play-btn'>Play</button>
+		<button class='versus-btn'>Play</button>
 		<button class='menu-btn'>
 			<svg viewBox='0 0 7 6'>
 				<path d='M1,1 h5 M1,3 h5 M1,5 h5'/>

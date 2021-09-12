@@ -126,10 +126,6 @@ button:disabled {
 	border-color: #444;
 }
 
-button:disabled > svg {
-	stroke: #444;
-}
-
 .home > button,
 .about > button,
 .start-btn,
@@ -145,12 +141,19 @@ button:disabled > svg {
 	margin-top: 8rem;
 }
 
+.home > .tutorial-btn {
+	margin-top: -3.5rem;
+	padding: .5rem;
+	width: 18rem;
+	font-size: 3rem;
+}
+
 .warn {
 	display: none;
 	position: absolute;
 	margin: 0 auto;
 	padding: 0 1rem;
-	bottom: -8rem;
+	bottom: -5rem;
 	left: 0;
 	right: 0;
 	width: max-content;
@@ -206,19 +209,13 @@ button:disabled > svg {
 }
 
 html:fullscreen .home > .fullscreen-btn {
+	color: #000;
 	background-color: #FFF;
 }
 
 html:-webkit-full-screen .home > .fullscreen-btn {
+	color: #000;
 	background-color: #FFF;
-}
-
-html:fullscreen .home > .fullscreen-btn > svg {
-	stroke: #000;
-}
-
-html:-webkit-full-screen .home > .fullscreen-btn > svg {
-	stroke: #000;
 }
 
 .blur {
@@ -227,6 +224,10 @@ html:-webkit-full-screen .home > .fullscreen-btn > svg {
 
 h2:not(:first-of-type) {
 	margin-top: 5rem;
+}
+
+.setup.solo > :not(.solo) {
+	display: none;
 }
 
 .incr-points {
@@ -368,6 +369,14 @@ label > input:checked::before {
 	height: 100%;
 }
 
+.game.solo > .versus {
+	display: none;
+}
+
+.game:not(.solo) > .solo {
+	display: none;
+}
+
 .border {
 	position: absolute;
 	height: 100%;
@@ -419,7 +428,147 @@ label > input:checked::before {
 	transform: translate(50%, -50%) rotate(90deg);
 }
 
-.buzzer {
+.expression.solo {
+	position: absolute;
+	top: 32%;
+	width: 100%;
+}
+
+.timer {
+	position: absolute;
+	top: 49.5%;
+	left: 50%;
+	height: 1rem;
+	width: 30rem;
+	background-color: #444;
+	transform: translateX(-50%);
+	transition: width .2s;
+}
+
+.timer::before {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	height: 1rem;
+	width: 0;
+	background-color: #FFF;
+	transform: translateX(-50%);
+	content: '';
+}
+
+.timer.countdown::before {
+	animation: timer 3s linear reverse;
+}
+
+.timer.running::before {
+	animation: timer linear;
+	animation-duration: inherit;
+}
+
+@keyframes timer {
+	from {
+		width: 100%;
+	}
+}
+
+.lives.solo {
+	position: absolute;
+	top: 53%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.lives.solo > img {
+	margin: 0 .25rem;
+	height: 3rem;
+}
+
+.game > .buzzer.solo {
+	position: absolute;
+	margin-right: -50%;
+	top: 62%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.game > .buzzer.solo > :not(.restart-btn) {
+	margin: auto 1rem;
+	padding: 1.7rem;
+	width: 18rem;
+	color: #000;
+	background-color: #FFF;
+	border: none;
+}
+
+.game > .buzzer.solo > .neg {
+	animation: buzzer-neg .6s;
+}
+
+.game.color-blind > .buzzer.solo > .neg {
+	animation: buzzer-neg-color-blind .6s;
+}
+
+.game > .buzzer.solo > .pos {
+	animation: buzzer-pos .6s;
+}
+
+.game.color-blind > .buzzer.solo > .pos {
+	animation: buzzer-pos-color-blind .6s;
+}
+
+@keyframes buzzer-neg {
+	from {
+		color: #FFF;
+		background-color: #F00;
+	}
+}
+
+@keyframes buzzer-neg-color-blind {
+	from {
+		color: #FFF;
+		background-color: #F70;
+	}
+}
+
+@keyframes buzzer-pos {
+	from {
+		color: #FFF;
+		background-color: #0F0;
+	}
+}
+
+@keyframes buzzer-pos-color-blind {
+	from {
+		color: #FFF;
+		background-color: #07F;
+	}
+}
+
+.buzzer.solo > .restart-btn {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	height: 9.2rem;
+	width: 38.4rem;
+	background-color: #000;
+	opacity: 0;
+	pointer-events: none;
+	transform: translateX(-50%);
+}
+
+.buzzer.solo > .restart-btn > svg {
+	height: 7rem;
+}
+
+.score {
+	position: absolute;
+	margin-right: -50%;
+	top: 75%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.buzzer.versus {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -429,14 +578,14 @@ label > input:checked::before {
 	transition: filter .2s;
 }
 
-.game.tutorial[data-step^='0'] > .buzzer {
+.game.tutorial[data-step^='0'] > .buzzer.versus {
 	filter: blur(2rem);
 }
 
-.game.tutorial[data-step^='1'].mark-up > .buzzer::before,
-.game.tutorial[data-step^='1'].mark-up > .buzzer::after,
-.game.tutorial[data-step^='1'].mark-dn > .buzzer::before,
-.game.tutorial[data-step^='1'].mark-dn > .buzzer::after {
+.game.tutorial[data-step^='1'].mark-up > .buzzer.versus::before,
+.game.tutorial[data-step^='1'].mark-up > .buzzer.versus::after,
+.game.tutorial[data-step^='1'].mark-dn > .buzzer.versus::before,
+.game.tutorial[data-step^='1'].mark-dn > .buzzer.versus::after {
 	position: absolute;
 	z-index: 1;
 	left: 50%;
@@ -448,24 +597,24 @@ label > input:checked::before {
 	animation: blink-hand 1s infinite;
 }
 
-.game.tutorial[data-step^='1'].mark-up > .buzzer::before {
+.game.tutorial[data-step^='1'].mark-up > .buzzer.versus::before {
 	top: 27%;
 	transform: translate(-60%, -50%) rotate(180deg);
 }
 
-.game.tutorial[data-step^='1'].mark-up > .buzzer::after {
+.game.tutorial[data-step^='1'].mark-up > .buzzer.versus::after {
 	top: 73%;
 	left: 84%;
 	transform: translate(-40%, -50%);
 }
 
-.game.tutorial[data-step^='1'].mark-dn > .buzzer::before {
+.game.tutorial[data-step^='1'].mark-dn > .buzzer.versus::before {
 	top: 27%;
 	left: 16%;
 	transform: translate(-60%, -50%) rotate(180deg);
 }
 
-.game.tutorial[data-step^='1'].mark-dn > .buzzer::after {
+.game.tutorial[data-step^='1'].mark-dn > .buzzer.versus::after {
 	top: 73%;
 	transform: translate(-40%, -50%);
 }
@@ -500,33 +649,33 @@ label > input:checked::before {
 	content: '';
 }
 
-.game.color-blind > .buzzer > .wave::before {
+.game.color-blind > .buzzer.versus > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #F70 75%);
 }
 
-.buzzer.pos > .wave::before {
+.buzzer.versus.pos > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #0F0 75%);
 }
 
-.game.color-blind > .buzzer.pos > .wave::before {
+.game.color-blind > .buzzer.versus.pos > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #07F 75%);
 }
 
-.buzzer.win > .wave {
+.buzzer.versus.game-over > .wave {
 	overflow: visible;
 }
 
-.buzzer.win > .wave::before {
+.buzzer.versus.game-over > .wave::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #FFF 75%) !important;
 }
 
-.buzzer.wave-up > .wave {
+.buzzer.versus.wave-up > .wave {
 	transform: translateX(-50%) rotate(180deg);
 }
 
-.buzzer.wave-up > .wave::before,
-.buzzer.wave-dn > .wave::before,
-.buzzer.win > .wave::before {
+.buzzer.versus.wave-up > .wave::before,
+.buzzer.versus.wave-dn > .wave::before,
+.buzzer.versus.game-over > .wave::before {
 	animation: wave .5s ease-out;
 }
 
@@ -563,16 +712,16 @@ label > input:checked::before {
 	content: '';
 }
 
-.buzzer.countdown > .sweep {
+.buzzer.versus.countdown > .sweep {
 	animation: sweep 3s linear;
 }
 
-.buzzer.wave-up > .sweep,
-.buzzer.wave-dn > .sweep {
+.buzzer.versus.wave-up > .sweep,
+.buzzer.versus.wave-dn > .sweep {
 	animation: sweep .75s linear;
 }
 
-.buzzer.win > .sweep {
+.buzzer.versus.game-over > .sweep {
 	animation: sweep 2s linear;
 }
 
@@ -583,7 +732,7 @@ label > input:checked::before {
 	}
 }
 
-.buzzer > button {
+.buzzer.versus > button {
 	position: absolute;
 	left: 0;
 	height: 100%;
@@ -595,21 +744,21 @@ label > input:checked::before {
 	border-radius: 50%;
 }
 
-.game.color-blind > .buzzer > .no {
+.game.color-blind > .buzzer.versus > .no {
 	background-color: #B50;
 }
 
-.buzzer > button.active {
+.buzzer.versus > button.active {
 	color: #FFF;
 	background-color: #F00;
 }
 
-.game.color-blind > .buzzer > .no.active {
+.game.color-blind > .buzzer.versus > .no.active {
 	background-color: #F70;
 }
 
-.buzzer > .no::before,
-.buzzer > .no::after {
+.buzzer.versus > .no::before,
+.buzzer.versus > .no::after {
 	position: absolute;
 	top: 50%;
 	left: 16%;
@@ -618,11 +767,11 @@ label > input:checked::before {
 	content: '\D7';
 }
 
-.buzzer > .no::after {
+.buzzer.versus > .no::after {
 	left: 84%;
 }
 
-.buzzer > .yes {
+.buzzer.versus > .yes {
 	top: 28.5%;
 	left: 28.5%;
 	height: 43%;
@@ -631,28 +780,21 @@ label > input:checked::before {
 	border: .8rem solid #000;
 }
 
-.game.color-blind > .buzzer > .yes {
+.game.color-blind > .buzzer.versus > .yes {
 	background-color: #05B;
 }
 
-.buzzer > .yes > svg {
-	stroke: #000;
-}
-
-.buzzer > .yes.active {
+.buzzer.versus > .yes.active {
 	background-color: #0F0;
 }
 
-.game.color-blind > .buzzer > .yes.active {
+.game.color-blind > .buzzer.versus > .yes.active {
 	background-color: #07F;
 }
 
-.buzzer > .yes.active > svg {
-	stroke: #FFF;
-}
-
-.buzzer > .restart-btn {
+.buzzer.versus > .restart-btn {
 	padding: 2rem;
+	color: #FFF;
 	background-color: #000;
 	opacity: 0;
 	border: #FFF solid 1rem;
@@ -661,13 +803,14 @@ label > input:checked::before {
 	transition: opacity .3s;
 }
 
-.buzzer.win > .restart-btn {
+.buzzer.game-over > .restart-btn {
 	opacity: 1;
 	pointer-events: auto;
 	animation: fade-in 2s;
 }
 
 .buzzer > .restart-btn:active {
+	color: #000;
 	background-color: #FFF;
 }
 
@@ -736,7 +879,7 @@ label > input:checked::before {
 	filter: blur(2rem);
 }
 
-.player {
+.name {
 	margin: 0 auto;
 	padding: 0 .5rem;
 	width: max-content;
@@ -746,14 +889,14 @@ label > input:checked::before {
 	transition: filter .2s;
 }
 
-.game.tutorial[data-step*='1'].mark-up > .up > .player,
-.game.tutorial[data-step*='1'].mark-dn > .dn > .player {
+.game.tutorial[data-step*='1'].mark-up > .up > .name,
+.game.tutorial[data-step*='1'].mark-dn > .dn > .name {
 	position: relative;
-	animation: blink-player 1s infinite;
+	animation: blink-name 1s infinite;
 }
 
-.game.tutorial[data-step*='1'].mark-up > .up > .player::before,
-.game.tutorial[data-step*='1'].mark-dn > .dn > .player::before {
+.game.tutorial[data-step*='1'].mark-up > .up > .name::before,
+.game.tutorial[data-step*='1'].mark-dn > .dn > .name::before {
 	position: absolute;
 	margin-right: .3rem;
 	right: 100%;
@@ -761,7 +904,7 @@ label > input:checked::before {
 	content: '=';
 }
 
-@keyframes blink-player {
+@keyframes blink-name {
 	50% {
 		color: #000;
 		background-color: #FF0;
@@ -881,16 +1024,12 @@ label > input:checked::before {
 svg {
 	display: block;
 	margin: auto;
-	stroke: #FFF;
+	stroke: currentColor;
 	stroke-width: 1;
 	stroke-linejoin: round;
 	stroke-linecap: round;
 	fill: none;
 	pointer-events: none;
-}
-
-button:active > svg {
-	stroke: #000;
 }
 
 .game > .prev-btn,
@@ -909,11 +1048,11 @@ button:active > svg {
 	right: 6rem;
 }
 
-.game > .play-btn {
+.game > .versus-btn {
 	display: none;
 }
 
-.game.tutorial[data-step='11'] > .play-btn {
+.game.tutorial[data-step='11'] > .versus-btn {
 	display: block;
 	position: absolute;
 	bottom: 2rem;
@@ -961,11 +1100,7 @@ button:active > svg {
 }
 
 .home-btn > svg {
-	fill: #FFF;
-}
-
-.home-btn:active > svg {
-	fill: #000;
+	fill: currentColor;
 }
 
 .menu-btn.opened ~ .home-btn {
@@ -1010,6 +1145,10 @@ button:active > svg {
 	margin-top: 126rem;
 }
 
+.game > .settings.fullscreen-enabled > .color-blind-btn {
+	margin-top: 119rem;
+}
+
 .game.color-blind > .settings > .color-blind-btn {
 	color: #000;
 	background-color: #FFF;
@@ -1017,6 +1156,10 @@ button:active > svg {
 
 .game > .settings > .fullscreen-btn {
 	display: none;
+}
+
+.game > .settings.fullscreen-enabled > .fullscreen-btn {
+	display: block;
 }
 
 html:fullscreen .settings > .fullscreen-btn {
@@ -1201,13 +1344,13 @@ and (max-width: 480px) {
 		width: 15.5rem;
 	}
 
-	.buzzer {
+	.buzzer.versus {
 		height: 40rem;
 		width: 40rem;
 	}
 
-	.game.tutorial > .buzzer::before,
-	.game.tutorial > .buzzer::after {
+	.game.tutorial > .buzzer.versus::before,
+	.game.tutorial > .buzzer.versus::after {
 		height: 12rem;
 		width: 12rem;
 	}
@@ -1222,15 +1365,15 @@ and (max-width: 480px) {
 		border-width: 1.2rem;
 	}
 
-	.buzzer > button {
+	.buzzer.versus > button {
 		font-size: 10.8rem;
 	}
 
-	.buzzer > .yes {
+	.buzzer.versus > .yes {
 		border-width: 1rem;
 	}
 
-	.buzzer > .restart-btn {
+	.buzzer.versus > .restart-btn {
 		border-width: 1.2rem;
 	}
 
@@ -1273,7 +1416,7 @@ and (max-width: 480px) {
 		right: 2rem;
 	}
 
-	.game.tutorial[data-step='11'] > .play-btn {
+	.game.tutorial[data-step='11'] > .versus-btn {
 		width: 14rem;
 		bottom: 9rem;
 		font-size: 3.4rem;
