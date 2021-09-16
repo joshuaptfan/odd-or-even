@@ -141,13 +141,16 @@ document.onreadystatechange = function () {
 	});
 	document.addEventListener('animationend', e => {
 		if (e.target.classList.contains('deactivated')) {
-			e.target.classList.remove('solo', 'activated', 'deactivated', 'fly-out-left', 'fly-out-right');
-			if (e.target.classList.contains('tutorial'))
-				game.classList.remove('tutorial', 'mark-up', 'mark-dn');
+			e.target.classList.remove('solo', 'activated', 'deactivated', 'fly-out-left', 'fly-out-right', 'tutorial', 'mark-up', 'mark-dn');
 		} else if (e.target.classList.contains('activated'))
 			e.target.classList.remove('fly-in-left', 'fly-in-right');
 		else if (e.target.classList.contains('running'))
 			score(null, null);
+		else if (e.target.classList.contains('expired')) {
+			e.target.className = 'timer solo running';
+			buzzerLock = false;
+			genExpression();
+		}
 	});
 
 	fullscreen: if (!window.matchMedia('(display-mode: fullscreen)').matches && !navigator.standalone) {
@@ -278,7 +281,7 @@ function initGame() {
 		while (stats.l < 3)
 			addLives(1);
 		setTimer(0);
-		timer.classList.remove('countdown', 'running');
+		timer.className = 'timer solo';
 		void timer.offsetWidth;
 		timer.classList.add('countdown');
 		buzzer.className = 'buzzer solo';
@@ -333,17 +336,27 @@ function score(e, val) {
 		timer.classList.remove('running');
 		void timer.offsetWidth;
 		if (stats.l === 0) {
+			buzzerLock = true;
 			setExpression('GAME OVER');
+			timer.classList.add('game-over');
 			document.querySelector('.buzzer.solo').classList.add('game-over');
+			setTimeout(() => {
+				buzzerLock = false;
+			}, 2000);
 			return;
 		}
 		setTimer(++stats.t);
-		timer.classList.add('running');
-		genExpression();
-		if (!e) return;
-		e.target.classList.remove('neg', 'pos');
-		void e.target.offsetWidth;
-		e.target.classList.add(correct ? 'pos' : 'neg');
+		if (e) {
+			genExpression();
+			timer.classList.add('running');
+			e.target.classList.remove('neg', 'pos');
+			void e.target.offsetWidth;
+			e.target.classList.add(correct ? 'pos' : 'neg');
+		} else {
+			buzzerLock = true;
+			setExpression(taunts[Math.trunc(Math.random() * 4)]);
+			timer.classList.add('expired');
+		}
 	} else {
 		stats[currParity].pt += val;
 		stats[currParity].t++;

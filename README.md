@@ -1,8 +1,8 @@
 # Odd or Even
 
-A game of simple speed math and reflexes. Play solo or local versus.
+A reflex game of simple speed math. Play solo or local versus.
 
-Web app: __https://oddoreven.app/__
+Play in the web app: __https://oddoreven.app/__
 
 [Progressive Web App](https://developers.google.com/web/progressive-web-apps) &mdash; can be installed on Android/iOS for the best fullscreen experience. The UI will be larger, and the game won't exit fullscreen when switching back from another app.
 
@@ -49,7 +49,7 @@ Hard difficulty adds multiplication to the mix, forcing players to pay attention
 * 2v2 &mdash; large touchscreen recommended
 * Drinking game &mdash; winner takes a drink
 
-## What Inspired this Game
+## What Inspired This Game
 
 In local multiplayer touchscreen games, there is a problem where the game has no way to be sure that any input originated from the correct player. So, I had an idea for a game that turns that problem into a feature. Originally, I wanted to make a game with 1 large button shared by all players, and that quickly evolved into the current nested 2-button design.
 

@@ -9,6 +9,7 @@ const precacheURLs = [
 	'/images/icon-512.png',
 	'/images/icon.svg',
 	'/images/infinity.svg',
+	'/images/heart.svg',
 	'/images/hand.svg',
 	'/images/qrcode.gif',
 	'/images/paypal.svg',

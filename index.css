@@ -447,12 +447,12 @@ label > input:checked::before {
 
 .timer::before {
 	position: absolute;
-	top: 0;
+	top: 50%;
 	left: 50%;
 	height: 1rem;
 	width: 0;
 	background-color: #FFF;
-	transform: translateX(-50%);
+	transform: translate(-50%, -50%);
 	content: '';
 }
 
@@ -465,9 +465,45 @@ label > input:checked::before {
 	animation-duration: inherit;
 }
 
+.timer.expired {
+	background-color: #F00;
+}
+
+.timer.expired::before {
+	animation: timer .3s linear reverse;
+}
+
+.timer.game-over {
+	animation: game-over 2s ease-in;
+}
+
+.timer.game-over::before {
+	animation: game-over-before 2s ease-in;
+}
+
 @keyframes timer {
 	from {
 		width: 100%;
+	}
+}
+
+@keyframes game-over {
+	from {
+		background-color: #F00;
+	}
+}
+
+@keyframes game-over-before {
+	from {
+		width: 100vw;
+		background-color: #F00;
+	} 90% {
+		height: 1px;
+		width: 100vw;
+	} to {
+		height: 1px;
+		width: 100%;
+		background-color: #444;
 	}
 }
 
@@ -500,20 +536,24 @@ label > input:checked::before {
 	border: none;
 }
 
+.timer.expired ~ .buzzer.solo > :not(.restart-btn) {
+	background-color: #666;
+}
+
 .game > .buzzer.solo > .neg {
-	animation: buzzer-neg .6s;
+	animation: buzzer-neg .5s ease-in;
 }
 
 .game.color-blind > .buzzer.solo > .neg {
-	animation: buzzer-neg-color-blind .6s;
+	animation: buzzer-neg-color-blind .5s ease-in;
 }
 
 .game > .buzzer.solo > .pos {
-	animation: buzzer-pos .6s;
+	animation: buzzer-pos .5s ease-in;
 }
 
 .game.color-blind > .buzzer.solo > .pos {
-	animation: buzzer-pos-color-blind .6s;
+	animation: buzzer-pos-color-blind .5s ease-in;
 }
 
 @keyframes buzzer-neg {
@@ -546,11 +586,9 @@ label > input:checked::before {
 
 .buzzer.solo > .restart-btn {
 	position: absolute;
-	top: 0;
 	left: 50%;
 	height: 9.2rem;
 	width: 38.4rem;
-	background-color: #000;
 	opacity: 0;
 	pointer-events: none;
 	transform: translateX(-50%);
@@ -795,16 +833,16 @@ label > input:checked::before {
 .buzzer.versus > .restart-btn {
 	padding: 2rem;
 	color: #FFF;
-	background-color: #000;
 	opacity: 0;
 	border: #FFF solid 1rem;
-	box-shadow: 0 0 0 1px #000;
 	pointer-events: none;
 	transition: opacity .3s;
 }
 
 .buzzer.game-over > .restart-btn {
+	background-color: #000;
 	opacity: 1;
+	box-shadow: 0 0 0 1px #000;
 	pointer-events: auto;
 	animation: fade-in 2s;
 }
@@ -1120,7 +1158,6 @@ svg {
 
 .game > .settings {
 	position: absolute;
-	top: 0;
 	height: 200rem;
 	width: 100%;
 	background: linear-gradient(#0006 50%, #000 57%);

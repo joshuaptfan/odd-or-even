@@ -16,6 +16,13 @@ const countdowns = [
 	['GOTTA', 'THINK', 'FAST'],
 ];
 
+const taunts = [
+	'FAIL',
+	'LATE',
+	'TOO SLOW',
+	'\xAF\\_(\u30C4)_/\xAF',
+];
+
 const tutorials = [
 	{ s: '00', t: 'There are 2 teams,\nOdd and Even.' },
 	{ s: '01', t: 'The result is either\nodd or even.' },
