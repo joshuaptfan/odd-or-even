@@ -140,9 +140,9 @@ document.onreadystatechange = function () {
 		}
 	});
 	document.addEventListener('animationend', e => {
-		if (e.target.classList.contains('deactivated')) {
+		if (e.target.classList.contains('deactivated'))
 			e.target.classList.remove('solo', 'activated', 'deactivated', 'fly-out-left', 'fly-out-right', 'tutorial', 'mark-up', 'mark-dn');
-		} else if (e.target.classList.contains('activated'))
+		else if (e.target.classList.contains('activated'))
 			e.target.classList.remove('fly-in-left', 'fly-in-right');
 		else if (e.target.classList.contains('running'))
 			score(null, null);
