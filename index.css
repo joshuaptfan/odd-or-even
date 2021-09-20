@@ -111,7 +111,6 @@ button {
 	vertical-align: middle;
 	color: #FFF;
 	background-color: transparent;
-	box-sizing: border-box;
 	border: .2rem solid #FFF;
 	border-radius: 5rem;
 	cursor: pointer;
@@ -588,7 +587,7 @@ label > input:checked::before {
 .buzzer.solo > .restart-btn {
 	position: absolute;
 	left: 50%;
-	height: 9.2rem;
+	height: 100%;
 	width: 38.4rem;
 	opacity: 0;
 	pointer-events: none;
