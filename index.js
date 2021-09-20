@@ -141,17 +141,13 @@ document.onreadystatechange = function () {
 	});
 	document.addEventListener('keydown', e => {
 		if (!solo || buzzerLock) return;
-		switch (e.key) {
-			case 'z':
+		if (stats.l !== 0) {
+			if (e.key === 'z')
 				score(document.querySelector('.odd'), 1);
-				break;
-			case 'x':
+			else if (e.key === 'x')
 				score(document.querySelector('.even'), 0);
-				break;
-			case ' ':
-				if (stats.l === 0)
-					initGame();
-		}
+		} else if (e.key === ' ')
+			initGame();
 	});
 	document.addEventListener('animationend', e => {
 		if (e.target.classList.contains('deactivated'))

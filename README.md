@@ -12,17 +12,19 @@ Play in the web app: __https://oddoreven.app/__
 
 Choose whether each math expression's result is odd or even before time runs out. The time limit decreases gradually as the game progresses.
 
-### Versus
+Keyboard controls are available in this mode.
 
-_Take the in-game tutorial for a briefer description of gameplay._
+| Key | Function |
+| --- | --- |
+| __Z__ | Odd |
+| __X__ | Even |
+| __Space__ | Restart |
+
+### Versus
 
 There are 2 teams, __Odd__ and __Even__. Each math expression's result has a _parity_ of either __odd__ or __even__.
 
-There are 2 buttons in the center, &#9711; and &#10005;. If the expression matches your team, press &#9711;. If it doesn't match your team, press &#10005;. Race against your opponent to press the correct button for your team.
-
-The game ends when one team gains a preset point lead over the other.
-
-How the buttons work is that each turn, they both affect the score of the team whose parity matches the expression result, adding or subtracting 1 from that team's score.
+There are 2 buttons in the center, &#9711; and &#10005;. If the parity matches your team, press &#9711;. If it doesn't match your team, press &#10005;. Race against your opponent to press the correct button for your team.
 
 ### Math Tips
 
