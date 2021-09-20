@@ -111,6 +111,7 @@ button {
 	vertical-align: middle;
 	color: #FFF;
 	background-color: transparent;
+	box-sizing: border-box;
 	border: .2rem solid #FFF;
 	border-radius: 5rem;
 	cursor: pointer;
@@ -529,7 +530,7 @@ label > input:checked::before {
 
 .game > .buzzer.solo > :not(.restart-btn) {
 	margin: auto 1rem;
-	padding: 1.7rem;
+	padding: 1.7rem 0;
 	width: 18rem;
 	color: #000;
 	background-color: #FFF;

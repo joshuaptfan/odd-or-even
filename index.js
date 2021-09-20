@@ -139,6 +139,20 @@ document.onreadystatechange = function () {
 				}
 		}
 	});
+	document.addEventListener('keydown', e => {
+		if (!solo || buzzerLock) return;
+		switch (e.key) {
+			case 'z':
+				score(document.querySelector('.odd'), 1);
+				break;
+			case 'x':
+				score(document.querySelector('.even'), 0);
+				break;
+			case ' ':
+				if (stats.l === 0)
+					initGame();
+		}
+	});
 	document.addEventListener('animationend', e => {
 		if (e.target.classList.contains('deactivated'))
 			e.target.classList.remove('solo', 'activated', 'deactivated', 'fly-out-left', 'fly-out-right', 'tutorial', 'mark-up', 'mark-dn');
@@ -222,7 +236,7 @@ document.onreadystatechange = function () {
 		e.preventDefault();
 		e.stopPropagation();
 		if (buzzerLock) return;
-		score(e, parseInt(e.target.value));
+		score(e.target, parseInt(e.target.value));
 	}
 
 	function resize() {
@@ -325,7 +339,7 @@ function addLives(n) {
 	document.querySelector('.lives.solo > img:nth-of-type(' + parseInt(stats.l + 1) + ')').src = 'images/heart.svg#h' + parseInt(stats.l % 1 * 8);
 }
 
-function score(e, val) {
+function score(el, val) {
 	if (solo) {
 		const timer = document.querySelector('.timer.solo');
 		const correct = val === currParity;
@@ -346,12 +360,12 @@ function score(e, val) {
 			return;
 		}
 		setTimer(++stats.t);
-		if (e) {
+		if (el) {
 			genExpression();
 			timer.classList.add('running');
-			e.target.classList.remove('neg', 'pos');
-			void e.target.offsetWidth;
-			e.target.classList.add(correct ? 'pos' : 'neg');
+			el.classList.remove('neg', 'pos');
+			void el.offsetWidth;
+			el.classList.add(correct ? 'pos' : 'neg');
 		} else {
 			buzzerLock = true;
 			setExpression(taunts[Math.trunc(Math.random() * 4)]);
@@ -384,11 +398,11 @@ function score(e, val) {
 		if (val > 0)
 			buzzer.classList.add('pos');
 		buzzer.classList.add('wave-' + stats[currParity].d);
-		e.target.classList.add('active');
+		el.classList.add('active');
 		setTimeout(() => {
 			buzzerLock = false;
 			buzzer.className = 'buzzer versus';
-			e.target.classList.remove('active');
+			el.classList.remove('active');
 			genExpression();
 		}, 750);
 	}
