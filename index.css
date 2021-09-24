@@ -110,7 +110,7 @@ button {
 	font-weight: 700;
 	vertical-align: middle;
 	color: #FFF;
-	background-color: transparent;
+	background-color: #000;
 	border: .2rem solid #FFF;
 	border-radius: 5rem;
 	cursor: pointer;
@@ -469,12 +469,24 @@ label > input:checked::before {
 	background-color: #F00;
 }
 
+.game.color-blind > .timer.expired {
+	background-color: #F70;
+}
+
 .timer.expired::before {
 	animation: timer .3s linear reverse;
 }
 
 .timer.game-over {
 	animation: game-over 2s ease-in;
+}
+
+.game.color-blind > .timer.game-over {
+	animation: game-over-color-blind 2s ease-in;
+}
+
+.game.color-blind > .timer.game-over::before {
+	animation: game-over-before-color-blind 2s ease-in;
 }
 
 .timer.game-over::before {
@@ -493,10 +505,30 @@ label > input:checked::before {
 	}
 }
 
+@keyframes game-over-color-blind {
+	from {
+		background-color: #F70;
+	}
+}
+
 @keyframes game-over-before {
 	from {
 		width: 100vw;
 		background-color: #F00;
+	} 90% {
+		height: 1px;
+		width: 100vw;
+	} to {
+		height: 1px;
+		width: 100%;
+		background-color: #444;
+	}
+}
+
+@keyframes game-over-before-color-blind {
+	from {
+		width: 100vw;
+		background-color: #F70;
 	} 90% {
 		height: 1px;
 		width: 100vw;
@@ -560,6 +592,7 @@ label > input:checked::before {
 	from {
 		color: #FFF;
 		background-color: #F00;
+		box-shadow: 0 0 4rem 2rem #F00;
 	}
 }
 
@@ -567,6 +600,7 @@ label > input:checked::before {
 	from {
 		color: #FFF;
 		background-color: #F70;
+		box-shadow: 0 0 4rem 2rem #F70;
 	}
 }
 
@@ -586,6 +620,7 @@ label > input:checked::before {
 
 .buzzer.solo > .restart-btn {
 	position: absolute;
+	top: 0;
 	left: 50%;
 	height: 100%;
 	width: 38.4rem;
@@ -1166,6 +1201,14 @@ svg {
 	transition: top .4s, opacity .4s;
 }
 
+.game.solo > .settings {
+	background: linear-gradient(#0006 52%, #000 59%);
+}
+
+.game.solo > .settings.vibration-enabled.fullscreen-enabled {
+	background: linear-gradient(#0006 48%, #000 55%);
+}
+
 .game.settings > .settings {
 	z-index: 4;
 	top: -50rem;
@@ -1182,19 +1225,27 @@ svg {
 	margin-top: 126rem;
 }
 
+.game.solo > .settings.vibration-enabled > .color-blind-btn,
 .game > .settings.fullscreen-enabled > .color-blind-btn {
 	margin-top: 119rem;
 }
 
-.game.color-blind > .settings > .color-blind-btn {
+.game.solo > .settings.vibration-enabled.fullscreen-enabled > .color-blind-btn {
+	margin-top: 108rem;
+}
+
+.game.color-blind > .settings > .color-blind-btn,
+.game.solo > .settings.vibration-on > .vibration-btn {
 	color: #000;
 	background-color: #FFF;
 }
 
+.game > .settings > .vibration-btn,
 .game > .settings > .fullscreen-btn {
 	display: none;
 }
 
+.game.solo > .settings.vibration-enabled > .vibration-btn,
 .game > .settings.fullscreen-enabled > .fullscreen-btn {
 	display: block;
 }

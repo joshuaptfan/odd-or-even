@@ -9,6 +9,7 @@ var stats;
 var currParity = 0;
 var tutorialStep = null;
 var buzzerLock = false;
+var vibration = false;
 var canWarnTouch = true;
 var interval;
 var installPrompt;
@@ -125,6 +126,12 @@ document.onreadystatechange = function () {
 				game.classList.toggle('color-blind');
 				localStorage.colorBlind = game.classList.contains('color-blind') ? 1 : 0;
 				break;
+			case 'vibration-btn':
+				vibration = !vibration;
+				game.querySelector('.settings').classList.toggle('vibration-on');
+				localStorage.vibration = vibration ? 1 : 0;
+				navigator.vibrate(vibration ? 5 : 0);
+				break;
 			case 'back-btn':
 				switch (document.querySelector('.activated').classList.item(1)) {
 					case 'setup':
@@ -162,6 +169,11 @@ document.onreadystatechange = function () {
 			genExpression();
 		}
 	});
+
+	if (navigator.vibrate && /Android/.test(navigator.userAgent)) {
+		vibration = parseInt(localStorage.vibration) || true;
+		game.querySelector('.settings').classList.add('vibration-enabled', vibration ? 'vibration-on' : '');
+	}
 
 	fullscreen: if (!window.matchMedia('(display-mode: fullscreen)').matches && !navigator.standalone) {
 		const about = document.querySelector('.about');
@@ -350,6 +362,8 @@ function score(el, val) {
 			setExpression('GAME OVER');
 			timer.classList.add('game-over');
 			document.querySelector('.buzzer.solo').classList.add('game-over');
+			if (vibration)
+				navigator.vibrate(20);
 			setTimeout(() => {
 				buzzerLock = false;
 			}, 2000);
@@ -367,6 +381,8 @@ function score(el, val) {
 			setExpression(taunts[Math.trunc(Math.random() * 4)]);
 			timer.classList.add('expired');
 		}
+		if (vibration && !correct)
+			navigator.vibrate(5);
 	} else {
 		stats[currParity].pt += val;
 		stats[currParity].t++;
