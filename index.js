@@ -1,9 +1,9 @@
-var solo = true;
+var solo = false;
 var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 10);
 var difficulty = {
 	solo: parseInt(localStorage.difficulty || 1) % 3,
 	versus: Math.trunc(parseInt(localStorage.difficulty || 3) / 3)
-}
+};
 var handicap = 0;
 var stats;
 var currParity = 0;
@@ -47,13 +47,13 @@ document.onreadystatechange = function () {
 		switch (e.target.classList.item(0)) {
 			case 'solo-btn':
 				solo = true;
+				buzzerLock = true;
 				setup.classList.add('solo');
 				game.classList.add('solo');
 				document.querySelector('[name="difficulty"][value="' + difficulty.solo + '"]').checked = true;
 				changePage('.home', '.setup', 'left');
 				break;
 			case 'versus-btn':
-				solo = false;
 				tutorialStep = null;
 				document.querySelector('[name="difficulty"][value="' + difficulty.versus + '"]').checked = true;
 				changePage(home.classList.contains('activated') ? '.home' : '.game', '.setup', 'left');
@@ -115,6 +115,7 @@ document.onreadystatechange = function () {
 				initGame();
 				break;
 			case 'home-btn':
+				solo = false;
 				document.querySelector('.menu-btn').classList.remove('opened');
 				changePage('.game', '.home', 'right');
 				break;
@@ -135,6 +136,7 @@ document.onreadystatechange = function () {
 			case 'back-btn':
 				switch (document.querySelector('.activated').classList.item(1)) {
 					case 'setup':
+						solo = false;
 						game.classList.remove('solo');
 						changePage('.setup', '.home', 'right');
 						break;
@@ -142,6 +144,7 @@ document.onreadystatechange = function () {
 						changePage('.about', '.home', 'right');
 						break;
 					case 'game':
+						tutorialStep = null;
 						changePage('.game', '.home', 'right');
 				}
 		}
@@ -158,7 +161,7 @@ document.onreadystatechange = function () {
 	});
 	document.addEventListener('animationend', e => {
 		if (e.target.classList.contains('deactivated'))
-			e.target.classList.remove('solo', 'activated', 'deactivated', 'fly-out-left', 'fly-out-right', 'tutorial', 'mark-up', 'mark-dn');
+			e.target.classList.remove('solo', 'activated', 'deactivated', 'fly-out-left', 'fly-out-right', 'tutorial', 'mark-up', 'mark-dn', 'game-over');
 		else if (e.target.classList.contains('activated'))
 			e.target.classList.remove('fly-in-left', 'fly-in-right');
 		else if (e.target.classList.contains('running'))
@@ -254,7 +257,7 @@ document.onreadystatechange = function () {
 };
 
 function initTutorial() {
-	solo = false;
+	buzzerLock = false;
 	tutorialStep = 1;
 	document.querySelector('.game').classList.add('tutorial');
 	document.querySelector('.buzzer.versus').className = 'buzzer versus';
@@ -277,6 +280,10 @@ function setTutorialStep(n) {
 function initPlayers() {
 	const side = Math.trunc(Math.random() * 2);
 	const score = (s => handicap > 0 ? [s, 0] : [0, s])(Math.abs(handicap) * (ptDelta || 100));
+	stats = [
+		{ p: 0, pt: score[1 - side], t: 0, d: side ? 'up' : 'dn' },
+		{ p: 1, pt: score[side], t: 0, d: side ? 'dn' : 'up' }
+	];
 	document.querySelector('.up > .name').textContent = side ? 'Even' : 'Odd';
 	let point = document.querySelector('.up > .point');
 	point.id = 'pt' + (side ? 0 : 1);
@@ -285,10 +292,6 @@ function initPlayers() {
 	point = document.querySelector('.dn > .point');
 	point.id = 'pt' + (side ? 1 : 0);
 	point.textContent = score[1];
-	stats = [
-		{ p: 0, pt: score[1 - side], t: 0, d: side ? 'up' : 'dn' },
-		{ p: 1, pt: score[side], t: 0, d: side ? 'dn' : 'up' }
-	];
 
 	document.querySelector('.lead').style.top = ((score[1] - score[0]) / (ptDelta || 100)) * 50 + 50 + '%';
 }
@@ -297,8 +300,9 @@ function initGame() {
 	const timer = document.querySelector('.timer.solo');
 	const buzzer = document.querySelector('.buzzer' + (solo ? '.solo' : '.versus'));
 	buzzerLock = true;
+	document.querySelector('.game').classList.remove('game-over');
 	if (solo) {
-		stats = { pt: 0, t: 0, l: 0 };
+		stats = { pt: 0, t: 0, l: 0, st: 0, lst: 0 };
 		document.querySelector('.score.solo > .point').textContent = 0;
 		while (stats.l < 3)
 			addLives(1);
@@ -348,10 +352,13 @@ function addLives(n) {
 }
 
 function score(el, val) {
+	const game = document.querySelector('.game');
 	if (solo) {
 		const timer = document.querySelector('.timer.solo');
 		const correct = val === currParity;
 		stats.pt += correct ? 1 : 0;
+		stats.st = correct ? stats.st + 1 : 0;
+		stats.lst += stats.st > stats.lst ? 1 : 0;
 
 		addLives(correct ? .125 : -1);
 		document.querySelector('.score.solo > .point').textContent = stats.pt;
@@ -360,8 +367,8 @@ function score(el, val) {
 		if (stats.l === 0) {
 			buzzerLock = true;
 			setExpression('GAME OVER');
-			timer.classList.add('game-over');
-			document.querySelector('.buzzer.solo').classList.add('game-over');
+			game.classList.add('game-over');
+			document.querySelector('.streak > .point').textContent = stats.lst;
 			if (vibration)
 				navigator.vibrate(20);
 			setTimeout(() => {
@@ -398,10 +405,10 @@ function score(el, val) {
 		const buzzer = document.querySelector('.buzzer.versus');
 		document.querySelector('.lead').style.top = ((stats[0].pt - stats[1].pt) / (ptDelta || 100)) * (stats[0].d === 'up' ? -50 : 50) + 50 + '%';
 		if (tutorialStep)
-			document.querySelector('.game').classList.remove('mark-up', 'mark-dn');
+			game.classList.remove('mark-up', 'mark-dn');
 		else if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
 			setExpression((stats[0].pt > stats[1].pt ? 'EVEN' : 'ODD') + ' WINS');
-			buzzer.classList.add('game-over');
+			game.classList.add('game-over');
 			setTimeout(() => {
 				buzzerLock = false;
 			}, 2000);

@@ -39,7 +39,6 @@ noscript {
 .page {
 	display: none;
 	position: fixed;
-	margin-right: -50%;
 	top: 50%;
 	left: 0;
 	width: 100%;
@@ -319,18 +318,12 @@ label > input:checked::before {
 
 .about > .install-text,
 .about > .install-text > .manual > *,
-.about > .install-btn {
-	display: none;
-}
-
-.about.install > .install-text {
-	display: block;
-}
-
+.about > .install-btn,
 .about.auto > .install-text > .manual {
 	display: none;
 }
 
+.about.install > .install-text,
 .about.install.auto > .install-btn {
 	display: block;
 }
@@ -369,10 +362,7 @@ label > input:checked::before {
 	height: 100%;
 }
 
-.game.solo > .versus {
-	display: none;
-}
-
+.game.solo > .versus,
 .game:not(.solo) > .solo {
 	display: none;
 }
@@ -477,19 +467,19 @@ label > input:checked::before {
 	animation: timer .3s linear reverse;
 }
 
-.timer.game-over {
+.game.solo.game-over > .timer {
 	animation: game-over 2s ease-in;
 }
 
-.game.color-blind > .timer.game-over {
+.game.solo.game-over.color-blind > .timer {
 	animation: game-over-color-blind 2s ease-in;
 }
 
-.game.color-blind > .timer.game-over::before {
+.game.solo.game-over.color-blind > .timer::before {
 	animation: game-over-before-color-blind 2s ease-in;
 }
 
-.timer.game-over::before {
+.game.solo.game-over > .timer::before {
 	animation: game-over-before 2s ease-in;
 }
 
@@ -641,6 +631,22 @@ label > input:checked::before {
 	transform: translateX(-50%);
 }
 
+.streak {
+	position: absolute;
+	margin-right: -50%;
+	top: 86%;
+	left: 50%;
+	font-size: 67%;
+	opacity: 0;
+	transform: translateX(-50%);
+	transition: top 1s, opacity 1s;
+}
+
+.game.solo.game-over > .streak {
+	top: 87%;
+	opacity: 1;
+}
+
 .buzzer.versus {
 	position: absolute;
 	top: 50%;
@@ -734,12 +740,12 @@ label > input:checked::before {
 	background: radial-gradient(circle farthest-side, transparent 50%, #07F 75%);
 }
 
-.buzzer.versus.game-over > .wave {
+.game:not(.solo).game-over > .buzzer.versus > .wave {
 	overflow: visible;
 }
 
-.buzzer.versus.game-over > .wave::before {
-	background: radial-gradient(circle farthest-side, transparent 50%, #FFF 75%) !important;
+.game:not(.solo).game-over > .buzzer.versus > .wave::before {
+	background: radial-gradient(circle farthest-side, transparent 50%, #FFF 75%);
 }
 
 .buzzer.versus.wave-up > .wave {
@@ -748,7 +754,7 @@ label > input:checked::before {
 
 .buzzer.versus.wave-up > .wave::before,
 .buzzer.versus.wave-dn > .wave::before,
-.buzzer.versus.game-over > .wave::before {
+.game:not(.solo).game-over > .buzzer.versus > .wave::before {
 	animation: wave .5s ease-out;
 }
 
@@ -794,7 +800,7 @@ label > input:checked::before {
 	animation: sweep .75s linear;
 }
 
-.buzzer.versus.game-over > .sweep {
+.game:not(.solo).game-over > .buzzer.versus > .sweep {
 	animation: sweep 2s linear;
 }
 
@@ -874,7 +880,7 @@ label > input:checked::before {
 	transition: opacity .3s;
 }
 
-.buzzer.game-over > .restart-btn {
+.game.game-over > .buzzer > .restart-btn {
 	background-color: #000;
 	opacity: 1;
 	box-shadow: 0 0 0 1px #000;
@@ -882,7 +888,7 @@ label > input:checked::before {
 	animation: fade-in 2s;
 }
 
-.buzzer > .restart-btn:active {
+.game.game-over > .buzzer > .restart-btn:active {
 	color: #000;
 	background-color: #FFF;
 }
@@ -911,7 +917,6 @@ label > input:checked::before {
 	left: 50%;
 	height: calc(50% - 18.5rem);
 	width: 100%;
-	font-size: 5rem;
 }
 
 .game.tutorial > .team::before {
@@ -946,6 +951,7 @@ label > input:checked::before {
 	line-height: 9rem;
 	font-size: 8rem;
 	white-space: nowrap;
+	transition: filter .2s;
 }
 
 .game.tutorial[data-step='00'] > .team > .expression {
@@ -956,10 +962,9 @@ label > input:checked::before {
 	margin: 0 auto;
 	padding: 0 .5rem;
 	width: max-content;
-	font-size: 4rem;
+	font-size: 4em;
 	color: #AAA;
 	border-radius: .5rem;
-	transition: filter .2s;
 }
 
 .game.tutorial[data-step*='1'].mark-up > .up > .name,
@@ -986,9 +991,7 @@ label > input:checked::before {
 
 .point {
 	position: relative;
-	font-size: 5rem;
-	color: #FFF;
-	transition: filter .2s;
+	font-size: 5em;
 }
 
 .point.flash::before {
@@ -1193,6 +1196,8 @@ svg {
 
 .game > .settings {
 	position: absolute;
+	z-index: 4;
+	top: 0;
 	height: 200rem;
 	width: 100%;
 	background: linear-gradient(#0006 50%, #000 57%);
@@ -1210,7 +1215,6 @@ svg {
 }
 
 .game.settings > .settings {
-	z-index: 4;
 	top: -50rem;
 	opacity: 1;
 	pointer-events: auto;
@@ -1473,7 +1477,7 @@ and (max-width: 480px) {
 		top: -10rem;
 	}
 
-	.expression {
+	.expression.versus {
 		margin: 2rem 0;
 	}
 
@@ -1525,5 +1529,9 @@ and (max-width: 480px) {
 	.menu-btn.opened ~ .settings-btn {
 		bottom: 2rem;
 		left: calc(100% - 8rem);
+	}
+
+	.game > .settings {
+		background: linear-gradient(#0006 52%, #000 59%);
 	}
 }
