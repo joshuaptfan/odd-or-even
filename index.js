@@ -18,25 +18,24 @@ document.onreadystatechange = function () {
 	const home = document.querySelector('.home');
 	const setup = document.querySelector('.setup');
 	const game = document.querySelector('.game');
-	document.querySelector('.num-points').textContent = ptDelta;
-	document.querySelector('.incr-points[value="-1"]').disabled = ptDelta === 5 ? true : false;
-	document.querySelector('.incr-points[value="1"]').disabled = !ptDelta ? true : false;
+	setup.querySelector('.num-points').textContent = ptDelta;
+	setup.querySelector('.incr-points[value="-1"]').disabled = ptDelta === 5 ? true : false;
+	setup.querySelector('.incr-points[value="1"]').disabled = !ptDelta ? true : false;
 	if (parseInt(localStorage.colorBlind))
 		game.classList.add('color-blind');
 
 	home.addEventListener('touchstart', () => {
-		home.removeEventListener('touchstart', arguments.callee);
 		home.removeEventListener('mousemove', warnTouch);
 		home.classList.remove('warn-touch');
 		canWarnTouch = false;
-		document.querySelector('.warn').textContent = 'PORTRAIT ORIENTATION RECOMMENDED';
+		home.querySelector('.warn').textContent = 'PORTRAIT ORIENTATION RECOMMENDED';
 		warnPortrait();
-	}, { passive: true });
-	home.addEventListener('mousemove', warnTouch);
-	document.querySelector('.buzzer.solo').addEventListener('touchstart', e => buzz(e));
-	document.querySelector('.buzzer.solo').addEventListener('click', e => buzz(e));
-	document.querySelector('.buzzer.versus').addEventListener('touchstart', e => buzz(e));
-	document.querySelector('.buzzer.versus').addEventListener('click', e => buzz(e));
+	}, { once: true, passive: true });
+	home.addEventListener('mousemove', warnTouch, { once: true });
+	game.querySelector('.buzzer.solo').addEventListener('touchstart', e => buzz(e));
+	game.querySelector('.buzzer.solo').addEventListener('click', e => buzz(e));
+	game.querySelector('.buzzer.versus').addEventListener('touchstart', e => buzz(e));
+	game.querySelector('.buzzer.versus').addEventListener('click', e => buzz(e));
 	document.addEventListener('click', e => {
 		if (e.target.classList.item(0) === 'select-bg') {
 			e.target.style.display = 'none';
@@ -50,12 +49,12 @@ document.onreadystatechange = function () {
 				buzzerLock = true;
 				setup.classList.add('solo');
 				game.classList.add('solo');
-				document.querySelector('[name="difficulty"][value="' + difficulty.solo + '"]').checked = true;
+				setup.querySelector('[name="difficulty"][value="' + difficulty.solo + '"]').checked = true;
 				changePage('.home', '.setup', 'left');
 				break;
 			case 'versus-btn':
 				tutorialStep = null;
-				document.querySelector('[name="difficulty"][value="' + difficulty.versus + '"]').checked = true;
+				setup.querySelector('[name="difficulty"][value="' + difficulty.versus + '"]').checked = true;
 				changePage(home.classList.contains('activated') ? '.home' : '.game', '.setup', 'left');
 				break;
 			case 'tutorial-btn':
@@ -74,9 +73,9 @@ document.onreadystatechange = function () {
 			case 'incr-points':
 				const pd = [5, 10, 20, 30, 40, 50, null];
 				ptDelta = pd[pd.indexOf(ptDelta) + parseInt(e.target.value)];
-				document.querySelector('.num-points').textContent = ptDelta;
-				document.querySelector('.incr-points[value="-1"]').disabled = ptDelta === 5 ? true : false;
-				document.querySelector('.incr-points[value="1"]').disabled = !ptDelta ? true : false;
+				setup.querySelector('.num-points').textContent = ptDelta;
+				setup.querySelector('.incr-points[value="-1"]').disabled = ptDelta === 5 ? true : false;
+				setup.querySelector('.incr-points[value="1"]').disabled = !ptDelta ? true : false;
 				localStorage.ptDelta = ptDelta || '\u221E';
 				break;
 			case 'difficulty':
@@ -116,7 +115,8 @@ document.onreadystatechange = function () {
 				break;
 			case 'home-btn':
 				solo = false;
-				document.querySelector('.menu-btn').classList.remove('opened');
+				clearInterval(interval);
+				game.querySelector('.menu-btn').classList.remove('opened');
 				changePage('.game', '.home', 'right');
 				break;
 			case 'settings-btn':
@@ -153,9 +153,9 @@ document.onreadystatechange = function () {
 		if (!solo || buzzerLock) return;
 		if (stats.l !== 0) {
 			if (e.key === 'z')
-				score(document.querySelector('.odd'), 1);
+				score(document.getElementById('odd'), 1);
 			else if (e.key === 'x')
-				score(document.querySelector('.even'), 0);
+				score(document.getElementById('even'), 0);
 		} else if (e.key === ' ')
 			initGame();
 	});
@@ -186,10 +186,10 @@ document.onreadystatechange = function () {
 			e.preventDefault();
 			installPrompt = e;
 			about.classList.add('auto');
-		});
+		}, { once: true });
 		window.addEventListener('appinstalled', () => {
 			about.classList.remove('install');
-		});
+		}, { once: true });
 		about.classList.add('install', /^iP(hone|[ao]d)/.test(navigator.platform) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ? 'ios' : 'android');
 		if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) break fullscreen;
 		home.querySelector('.fullscreen-btn').style.display = 'block';
@@ -217,7 +217,6 @@ document.onreadystatechange = function () {
 	}
 
 	function warnTouch() {
-		home.removeEventListener('mousemove', warnTouch);
 		home.classList.add('warn-touch');
 	}
 
@@ -230,7 +229,7 @@ document.onreadystatechange = function () {
 	}
 
 	function setHandicap(el) {
-		const handicapBtn = document.querySelector('.handicap-btn');
+		const handicapBtn = setup.querySelector('.handicap-btn');
 		handicapBtn.classList.remove('uparr', 'dnarr');
 		document.querySelector('.handicap[value="' + handicap + '"]').classList.remove('selected');
 		handicap = parseFloat(el.value);
@@ -238,7 +237,7 @@ document.onreadystatechange = function () {
 		handicapBtn.textContent = el.textContent;
 		el.classList.add('selected');
 		document.querySelector('.select-bg.handicap').style.display = 'none';
-		document.querySelector('.setup').classList.remove('blur');
+		setup.classList.remove('blur');
 		document.querySelector('.back-btn').classList.remove('blur');
 	}
 
@@ -354,21 +353,21 @@ function addLives(n) {
 function score(el, val) {
 	const game = document.querySelector('.game');
 	if (solo) {
-		const timer = document.querySelector('.timer.solo');
+		const timer = game.querySelector('.timer.solo');
 		const correct = val === currParity;
 		stats.pt += correct ? 1 : 0;
 		stats.st = correct ? stats.st + 1 : 0;
 		stats.lst += stats.st > stats.lst ? 1 : 0;
 
 		addLives(correct ? .125 : -1);
-		document.querySelector('.score.solo > .point').textContent = stats.pt;
+		game.querySelector('.score.solo > .point').textContent = stats.pt;
 		timer.classList.remove('running');
 		void timer.offsetWidth;
 		if (stats.l === 0) {
 			buzzerLock = true;
 			setExpression('GAME OVER');
 			game.classList.add('game-over');
-			document.querySelector('.streak > .point').textContent = stats.lst;
+			game.querySelector('.streak > .point').textContent = stats.lst;
 			if (vibration)
 				navigator.vibrate(20);
 			setTimeout(() => {
@@ -394,7 +393,7 @@ function score(el, val) {
 		stats[currParity].pt += val;
 		stats[currParity].t++;
 
-		const point = document.querySelector('#pt' + currParity);
+		const point = game.querySelector('#pt' + currParity);
 		point.textContent = stats[currParity].pt;
 		point.dataset.value = stats[currParity].pt;
 		point.classList.remove('flash', 'neg', 'pos');
@@ -402,8 +401,8 @@ function score(el, val) {
 		point.classList.add('flash', val < 0 ? 'neg' : 'pos');
 
 		buzzerLock = true;
-		const buzzer = document.querySelector('.buzzer.versus');
-		document.querySelector('.lead').style.top = ((stats[0].pt - stats[1].pt) / (ptDelta || 100)) * (stats[0].d === 'up' ? -50 : 50) + 50 + '%';
+		const buzzer = game.querySelector('.buzzer.versus');
+		game.querySelector('.lead').style.top = ((stats[0].pt - stats[1].pt) / (ptDelta || 100)) * (stats[0].d === 'up' ? -50 : 50) + 50 + '%';
 		if (tutorialStep)
 			game.classList.remove('mark-up', 'mark-dn');
 		else if (Math.abs(stats[0].pt - stats[1].pt) === ptDelta) {
@@ -476,6 +475,7 @@ function genExpression() {
 	// Reduce additions
 	// If parity does not match current player, flip parity
 	flip: if (exP.reduce((p, v) => p + v.par & 1, 0) !== currParity) {
+		const flipParity = i => ex[i].num += ex[i].par ? -1 : 1;
 		// Flip additive component if exists
 		for (let i = 0; i < ex.length; i++) {
 			if (ex[i].opr === 3 || ex[i + 1] && ex[i + 1].opr === 3) continue;
@@ -488,10 +488,6 @@ function genExpression() {
 		else
 			for (let i = 0; i < exP[0].len; i++)
 				ex[i].num += ex[i].par ? 0 : 1;
-
-		function flipParity(i) {
-			ex[i].num += ex[i].par ? -1 : 1;
-		}
 	}
 
 	setExpression(ex.reduce((s, v) => s + ['', '+', '\u2212', '\xD7'][v.opr] + v.num, ''));

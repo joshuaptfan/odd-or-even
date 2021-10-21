@@ -5,9 +5,9 @@
 	text-align: center;
 	color: #FFF;
 	background-color: #000;
+	touch-action: none;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-user-select: none;
-	   -moz-user-select: none;
 	        user-select: none;
 }
 
@@ -15,7 +15,7 @@ body {
 	margin: 0;
 }
 
-*:focus {
+:focus {
 	outline: none;
 }
 
@@ -191,10 +191,10 @@ button:disabled {
 	position: absolute;
 	margin: 0;
 	padding: .8rem;
-	top: calc(50% + 43rem);
+	top: calc(50% + 42rem);
 	left: 50%;
-	height: 5rem;
-	width: 5rem;
+	height: 6rem;
+	width: 6rem;
 	transform: translateX(-50%);
 	transition: opacity .2s;
 }
@@ -374,7 +374,7 @@ label > input:checked::before {
 	opacity: 0;
 	box-sizing: border-box;
 	border: 1rem solid #FFF;
-	border-radius: 4.5rem;
+	border-radius: 5rem;
 	transition: opacity .3s;
 }
 
@@ -391,12 +391,12 @@ label > input:checked::before {
 	position: absolute;
 	bottom: -1rem;
 	left: -1rem;
-	height: 14.5rem;
-	width: 14.5rem;
+	height: 15.5rem;
+	width: 15.5rem;
 	fill: #000;
 }
 
-.border > svg.sm {
+.border > svg.lg {
 	display: none;
 }
 
@@ -550,6 +550,7 @@ label > input:checked::before {
 }
 
 .game > .buzzer.solo > :not(.restart-btn) {
+	position: relative;
 	margin: auto 1rem;
 	padding: 1.7rem 0;
 	width: 18rem;
@@ -610,12 +611,11 @@ label > input:checked::before {
 
 .buzzer.solo > .restart-btn {
 	position: absolute;
+	visibility: hidden;
 	top: 0;
 	left: 50%;
 	height: 100%;
 	width: 38.4rem;
-	opacity: 0;
-	pointer-events: none;
 	transform: translateX(-50%);
 }
 
@@ -651,8 +651,8 @@ label > input:checked::before {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	height: 33rem;
-	width: 33rem;
+	height: 40rem;
+	width: 40rem;
 	transform: translate(-50%, -50%);
 	transition: filter .2s;
 }
@@ -668,8 +668,8 @@ label > input:checked::before {
 	position: absolute;
 	z-index: 1;
 	left: 50%;
-	height: 10rem;
-	width: 10rem;
+	height: 12rem;
+	width: 12rem;
 	background: no-repeat center/100% url(images/hand.svg);
 	pointer-events: none;
 	content: '';
@@ -772,7 +772,7 @@ label > input:checked::before {
 	z-index: -1;
 	top: 50%;
 	left: 50%;
-	height: 37rem;
+	height: 45rem;
 	width: 0;
 	transform: translate(-50%, -50%);
 	overflow: hidden;
@@ -783,10 +783,10 @@ label > input:checked::before {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	height: 35rem;
-	width: 35rem;
+	height: 42.4rem;
+	width: 42.4rem;
 	transform: translate(-50%, -50%);
-	border: 1rem solid #FFF;
+	border: 1.2rem solid #FFF;
 	border-radius: 50%;
 	content: '';
 }
@@ -816,7 +816,7 @@ label > input:checked::before {
 	left: 0;
 	height: 100%;
 	width: 100%;
-	font-size: 9rem;
+	font-size: 10.8rem;
 	color: #000;
 	background-color: #B00;
 	border: none;
@@ -856,7 +856,7 @@ label > input:checked::before {
 	height: 43%;
 	width: 43%;
 	background-color: #0B0;
-	border: .8rem solid #000;
+	border: 1rem solid #000;
 }
 
 .game.color-blind > .buzzer.versus > .yes {
@@ -875,15 +875,19 @@ label > input:checked::before {
 	padding: 2rem;
 	color: #FFF;
 	opacity: 0;
-	border: #FFF solid 1rem;
+	border: 1.2rem solid #FFF;
 	pointer-events: none;
 	transition: opacity .3s;
 }
 
+.game.game-over > .buzzer > button:not(.restart-btn) {
+	visibility: hidden;
+}
+
 .game.game-over > .buzzer > .restart-btn {
+	visibility: visible;
 	background-color: #000;
 	opacity: 1;
-	box-shadow: 0 0 0 1px #000;
 	pointer-events: auto;
 	animation: fade-in 2s;
 }
@@ -915,7 +919,7 @@ label > input:checked::before {
 	z-index: 1;
 	margin-right: -50%;
 	left: 50%;
-	height: calc(50% - 18.5rem);
+	height: calc(50% - 22.4rem);
 	width: 100%;
 }
 
@@ -924,7 +928,7 @@ label > input:checked::before {
 	z-index: 2;
 	margin-right: -50%;
 	padding: 1rem;
-	top: -8rem;
+	top: -10rem;
 	left: 50%;
 	line-height: 4rem;
 	transform: translateX(-50%);
@@ -952,6 +956,10 @@ label > input:checked::before {
 	font-size: 8rem;
 	white-space: nowrap;
 	transition: filter .2s;
+}
+
+.expression.versus {
+	margin: 2rem 0;
 }
 
 .game.tutorial[data-step='00'] > .team > .expression {
@@ -1059,8 +1067,8 @@ label > input:checked::before {
 	display: none;
 	position: absolute;
 	-webkit-appearance: none;
-	bottom: 2rem;
-	right: 4rem;
+	bottom: 9rem;
+	right: 2rem;
 	height: 1rem;
 	width: 14rem;
 	background-color: #444;
@@ -1093,8 +1101,8 @@ label > input:checked::before {
 	padding: .8rem;
 	bottom: 2rem;
 	left: 2rem;
-	height: 5rem;
-	width: 5rem;
+	height: 6rem;
+	width: 6rem;
 }
 
 svg {
@@ -1112,16 +1120,16 @@ svg {
 .game > .next-btn {
 	display: none;
 	z-index: 4;
-	bottom: 50%;
-	left: 6rem;
+	bottom: 5rem;
+	left: auto;
+	right: 10rem;
 	height: 6rem;
 	width: 6rem;
 	transform: translateY(50%);
 }
 
 .game > .next-btn {
-	left: auto;
-	right: 6rem;
+	right: 2rem;
 }
 
 .game > .versus-btn {
@@ -1131,11 +1139,11 @@ svg {
 .game.tutorial[data-step='11'] > .versus-btn {
 	display: block;
 	position: absolute;
-	bottom: 2rem;
+	bottom: 9rem;
 	left: auto;
 	right: 2rem;
-	width: 18rem;
-	font-size: 2.8rem;
+	width: 14rem;
+	font-size: 3.4rem;
 }
 
 .game.tutorial[data-step*='0'] > progress,
@@ -1153,7 +1161,7 @@ svg {
 }
 
 .menu-btn > svg {
-	width: 3rem;
+	width: 3.6rem;
 }
 
 .game > .restart-btn {
@@ -1166,7 +1174,7 @@ svg {
 }
 
 .menu-btn.opened ~ .restart-btn {
-	left: 9rem;
+	left: 10rem;
 	opacity: 1;
 }
 
@@ -1180,7 +1188,7 @@ svg {
 }
 
 .menu-btn.opened ~ .home-btn {
-	left: 16rem;
+	left: calc(100% - 16rem);
 	opacity: 1;
 }
 
@@ -1190,7 +1198,8 @@ svg {
 }
 
 .menu-btn.opened ~ .settings-btn {
-	bottom: 9rem;
+	bottom: 2rem;
+	left: calc(100% - 8rem);
 	opacity: 1;
 }
 
@@ -1200,18 +1209,18 @@ svg {
 	top: 0;
 	height: 200rem;
 	width: 100%;
-	background: linear-gradient(#0006 50%, #000 57%);
+	background: linear-gradient(#0008 52%, #000 59%);
 	opacity: 0;
 	pointer-events: none;
 	transition: top .4s, opacity .4s;
 }
 
 .game.solo > .settings {
-	background: linear-gradient(#0006 52%, #000 59%);
+	background: linear-gradient(#0008 52%, #000 59%);
 }
 
 .game.solo > .settings.vibration-enabled.fullscreen-enabled {
-	background: linear-gradient(#0006 48%, #000 55%);
+	background: linear-gradient(#0008 48%, #000 55%);
 }
 
 .game.settings > .settings {
@@ -1267,7 +1276,7 @@ html:-webkit-full-screen .settings > .fullscreen-btn {
 .game > .settings > .close-btn {
 	margin: 0;
 	padding: .8rem;
-	top: calc(50% + 43rem);
+	top: calc(50% + 42rem);
 	bottom: auto;
 	left: 50%;
 	transform: translateX(-50%);
@@ -1285,7 +1294,8 @@ html:-webkit-full-screen .settings > .fullscreen-btn {
 }
 
 .setup.deactivated ~ .back-btn,
-.about.deactivated ~ .back-btn {
+.about.deactivated ~ .back-btn,
+.home.activated ~ .game.tutorial.deactivated + .back-btn {
 	animation: fade-out-right .5s;
 }
 
@@ -1323,7 +1333,7 @@ html:-webkit-full-screen .settings > .fullscreen-btn {
 	left: 0;
 	height: 100rem;
 	width: 100%;
-	background-color: rgba(0, 0, 0, .7);
+	background-color: #000A;
 }
 
 .select {
@@ -1415,123 +1425,137 @@ button.selected {
 	background-color: #FFF;
 }
 
-@media only screen
-and (max-width: 480px) {
+@media (min-width: 480px) {
 	.home > .fullscreen-btn,
 	.game > .settings > .close-btn {
-		top: calc(50% + 42rem);
+		top: calc(50% + 43rem);
 	}
 
 	.border {
-		border-radius: 5rem;
-	}
-
-	.border > svg.lg {
-		display: none;
+		border-radius: 4.5rem;
 	}
 
 	.border > svg.sm {
+		display: none;
+	}
+
+	.border > svg.lg {
 		display: initial;
-		height: 15.5rem;
-		width: 15.5rem;
+		height: 14.5rem;
+		width: 14.5rem;
 	}
 
 	.buzzer.versus {
-		height: 40rem;
-		width: 40rem;
+		height: 33rem;
+		width: 33rem;
 	}
 
 	.game.tutorial > .buzzer.versus::before,
 	.game.tutorial > .buzzer.versus::after {
-		height: 12rem;
-		width: 12rem;
+		height: 10rem;
+		width: 10rem;
 	}
 
 	.sweep {
-		height: 45rem;
+		height: 37rem;
 	}
 
 	.sweep::before {
-		height: 42.4rem;
-		width: 42.4rem;
-		border-width: 1.2rem;
-	}
-
-	.buzzer.versus > button {
-		font-size: 10.8rem;
-	}
-
-	.buzzer.versus > .yes {
+		height: 35rem;
+		width: 35rem;
 		border-width: 1rem;
 	}
 
+	.buzzer.versus > button {
+		font-size: 9rem;
+	}
+
+	.buzzer.versus > .yes {
+		border-width: .8rem;
+	}
+
 	.buzzer.versus > .restart-btn {
-		border-width: 1.2rem;
+		border-width: 1rem;
 	}
 
 	.team {
-		height: calc(50% - 22.4rem);
+		height: calc(50% - 18.5rem);
 	}
 
 	.game.tutorial > .team::before {
-		top: -10rem;
+		top: -8rem;
 	}
 
 	.expression.versus {
-		margin: 2rem 0;
+		margin: 4rem 0;
 	}
 
 	.game > progress {
-		bottom: 9rem;
-		right: 2rem;
+		bottom: 2rem;
+		right: 4rem;
 	}
 
 	.home > .fullscreen-btn,
 	.game > button,
 	.close-btn,
 	.back-btn {
-		height: 6rem;
-		width: 6rem;
+		height: 5rem;
+		width: 5rem;
 	}
 
 	.game > .prev-btn,
 	.game > .next-btn {
-		bottom: 5rem;
+		bottom: 50%;
 	}
 
 	.game > .prev-btn {
-		left: auto;
-		right: 10rem;
+		left: 6rem;
+		right: auto;
 	}
 
 	.game > .next-btn {
-		right: 2rem;
+		right: 6rem;
 	}
 
 	.game.tutorial[data-step='11'] > .versus-btn {
-		width: 14rem;
-		bottom: 9rem;
-		font-size: 3.4rem;
+		bottom: 2rem;
+		width: 18rem;
+		font-size: 2.8rem;
 	}
 
 	.menu-btn > svg {
-		width: 3.6rem;
+		width: 3rem;
 	}
 
 	.menu-btn.opened ~ .restart-btn {
-		left: 10rem;
+		left: 9rem;
 	}
 
 	.menu-btn.opened ~ .home-btn {
-		left: calc(100% - 16rem);
+		left: 16rem;
 	}
 
 	.menu-btn.opened ~ .settings-btn {
-		bottom: 2rem;
-		left: calc(100% - 8rem);
+		bottom: 9rem;
+		left: 2rem;
 	}
 
 	.game > .settings {
-		background: linear-gradient(#0006 52%, #000 59%);
+		background: linear-gradient(#0008 50%, #000 57%);
+	}
+
+	@media (hover: hover) and (pointer: fine) {
+		.buzzer.solo > button:hover::before {
+			position: absolute;
+			padding: .2rem .8rem;
+			top: 108%;
+			left: 50%;
+			font-size: 40%;
+			color: #000;
+			background-color: #666;
+			border-radius: 1rem;
+			transform: translateX(-50%);
+			content: attr(data-hover);
+		}
 	}
 }
