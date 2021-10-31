@@ -1,8 +1,8 @@
 var solo = false;
 var ptDelta = (n => n === '\u221E' ? null : parseInt(n))(localStorage.ptDelta || 10);
 var difficulty = {
-	solo: parseInt(localStorage.difficulty || 1) % 3,
-	versus: Math.trunc(parseInt(localStorage.difficulty || 3) / 3)
+	solo: parseInt(localStorage.difficulty || 0) % 3,
+	versus: Math.trunc(parseInt(localStorage.difficulty || 0) / 3)
 };
 var handicap = 0;
 var stats;
